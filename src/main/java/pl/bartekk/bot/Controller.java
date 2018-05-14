@@ -15,10 +15,18 @@ import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.ardulink.core.Link;
+import org.ardulink.core.convenience.Links;
+import org.ardulink.util.URIs;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Controller {
+
+    // FIXME: 14.05.2018
+//    Link link = Links.getLink(URIs.newURI("ardulink://serial?port=COM5&baudrate=9600&pingprobe=false"));
+    Link link = Links.getLink(URIs.newURI("ardulink://serial-jssc?port=COM5&baudrate=9600&pingprobe=false"));
 
     private static String FEM_FILE_PATH = "n/a";
 
@@ -137,7 +145,7 @@ public class Controller {
         motor2Pane.setDisable(true);
     }
 
-    public void testMethod() {
-        System.out.println(FEM_FILE_PATH);
+    public void testMethod() throws IOException {
+        link.sendCustomMessage("1");
     }
 }
