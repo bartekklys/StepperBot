@@ -20,21 +20,27 @@ import java.io.File;
 
 public class Controller {
 
+    private static String FEM_FILE_PATH;
+
     public MenuItem aboutItem;
     public Button button;
     public ComboBox portID;
     public ComboBox motor1Direction;
     public Label statusLabel;
-    public ImageView motor1;
     public Button rotateButton;
     public Slider motor1Speed;
     public Button startButton;
+
+    // images
+    public ImageView motor1Image;
+    public ImageView motor2Image;
 
     public CheckBox separatelyBox;
     public CheckBox collectivelyBox;
 
     public Pane motor2Pane;
     public Label timeLabel;
+    public Label selectedFilePath;
 
     // pane
     public Pane controlPane;
@@ -59,17 +65,23 @@ public class Controller {
     }
 
     private void disableDashboard(boolean disable) {
+
+        double opacity = disable ? 0.25 : 1;
+
         controlPane.setDisable(disable);
         motorPane.setDisable(disable);
         summaryPane.setDisable(disable);
+        motor1Image.setOpacity(opacity);
+        motor2Image.setOpacity(opacity);
     }
 
     public void chooseFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         File selectedFile = fileChooser.showOpenDialog(new Stage());
-
-        System.out.println("DUPA " + selectedFile.getAbsolutePath());
+        FEM_FILE_PATH = selectedFile.getAbsolutePath();
+        selectedFilePath.setText(FEM_FILE_PATH);
+        System.out.println(FEM_FILE_PATH);
     }
 
     public void showAboutMessageDialog() {
@@ -82,7 +94,7 @@ public class Controller {
 
     public void rotateImage() {
 
-        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(10), motor1);
+        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(10), motor1Image);
         rotateTransition.setFromAngle(0);
         rotateTransition.setToAngle(3600);
         if (rotateTransition.getStatus() == Animation.Status.RUNNING) {
@@ -122,5 +134,9 @@ public class Controller {
         collectivelyBox.setSelected(true);
         separatelyBox.setSelected(false);
         motor2Pane.setDisable(true);
+    }
+
+    public void testMethod() {
+        System.out.println(FEM_FILE_PATH);
     }
 }

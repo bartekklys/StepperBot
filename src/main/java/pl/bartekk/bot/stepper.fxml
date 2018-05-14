@@ -32,6 +32,9 @@
             <Label fx:id="statusLabel" font="$x1" layoutX="583.0" layoutY="38.0" text="Disconnected" textFill="RED" wrapText="false" />
             <Label layoutX="124.0" layoutY="9.0" text="FEM file path:" />
             <Button layoutX="201.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFile" prefWidth="184.0" text="Choose file" />
+            <Button fx:id="testButton" layoutX="734.0" layoutY="37.0" mnemonicParsing="false" onAction="#testMethod" text="Test" />
+            <Label layoutX="411.0" layoutY="9.0" prefWidth="72.0" text="Selected file:" />
+            <Label fx:id="selectedFilePath" layoutX="491.0" layoutY="9.0" prefWidth="287.0" text="n/a" />
           </children>
           <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2" />
@@ -43,7 +46,7 @@
           <children>
             <Pane fx:id="motor1Pane" layoutX="0.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="235.0" style="-fx-border-color:black;">
               <children>
-                <ImageView fx:id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="43.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView id="motor1" fx:id="motor1Image" fitHeight="150.0" fitWidth="200.0" layoutX="43.0" layoutY="29.0" opacity="0.25" pickOnBounds="true" preserveRatio="true">
                   <image>
                     <Image url="@images/circle.png" />
                   </image>
@@ -69,7 +72,7 @@
             </Pane>
             <Pane fx:id="motor2Pane" disable="false" layoutX="235.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="235.0" style="-fx-border-color:black;">
               <children>
-                <ImageView id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="43.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView id="motor1" fx:id="motor2Image" fitHeight="150.0" fitWidth="200.0" layoutX="43.0" layoutY="29.0" opacity="0.25" pickOnBounds="true" preserveRatio="true">
                   <image>
                     <Image url="@images/circle.png" />
                   </image>
@@ -128,11 +131,6 @@
             <Menu mnemonicParsing="false" text="File">
               <items>
                 <MenuItem mnemonicParsing="false" text="Close" />
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Delete" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
