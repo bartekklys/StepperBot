@@ -3,6 +3,7 @@
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.collections.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
@@ -13,7 +14,7 @@
   <children>
     <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="true">
       <bottom>
-        <Pane id="" disable="false" prefHeight="75.0" prefWidth="800.0">
+        <Pane id="" disable="false" prefHeight="68.0" prefWidth="778.0" style="-fx-border-color:black;">
           <children>
             <Label layoutX="124.0" layoutY="37.0" text="Port:">
               <font>
@@ -34,42 +35,76 @@
             <Label layoutX="124.0" layoutY="9.0" text="FEM file path:" />
             <Button layoutX="201.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFile" prefWidth="184.0" text="Choose file" />
           </children>
+          <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2" />
+          </BorderPane.margin>
         </Pane>
       </bottom>
       <center>
-        <Pane prefHeight="200.0" prefWidth="200.0">
+        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.margin="$x2">
           <children>
-            <ImageView fx:id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="21.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@images/circle.png" />
-              </image>
-            </ImageView>
-            <ImageView id="motor2" fitHeight="150.0" fitWidth="200.0" layoutX="218.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true">
-              <image>
-                <Image url="@images/circle.png" />
-              </image>
-            </ImageView>
+            <Pane layoutX="-1.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="201.0" style="-fx-border-color:black;">
+              <children>
+                <ImageView fx:id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="25.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@images/circle.png" />
+                  </image>
+                </ImageView>
+                <ComboBox fx:id="motor1Direction" layoutX="25.0" layoutY="223.0" prefHeight="21.0" prefWidth="140.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Clockwise" />
+                      <String fx:value="Anticlockwise" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <Slider fx:id="motor1Speed" layoutX="25.0" layoutY="278.0" majorTickUnit="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
+                <Label layoutX="25.0" layoutY="336.0" text="Speed:" />
+                <TextField layoutX="80.0" layoutY="333.0" prefWidth="95.0" text="${motor1Speed.value}" />
+                <Button fx:id="motor1StartButton" layoutX="72.0" layoutY="444.0" mnemonicParsing="false" onAction="#start" text="Start" />
+              </children>
+              <padding>
+                <Insets />
+              </padding>
+            </Pane>
+            <Pane fx:id="motor2Pane" disable="true" layoutX="207.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="201.0" style="-fx-border-color:black;">
+              <children>
+                <ImageView id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="26.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                    <Image url="@images/circle.png" />
+                  </image>
+                </ImageView>
+                <ComboBox id="motor1Direction" layoutX="25.0" layoutY="223.0" prefHeight="21.0" prefWidth="140.0">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Clockwise" />
+                      <String fx:value="Anticlockwise" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <Slider id="motor1Speed" layoutX="25.0" layoutY="278.0" majorTickUnit="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
+                <Label layoutX="25.0" layoutY="336.0" text="Speed:" />
+                <TextField layoutX="80.0" layoutY="333.0" prefWidth="95.0" text="${motor1Speed.value}" />
+                <Button id="motor1StartButton" layoutX="72.0" layoutY="444.0" mnemonicParsing="false" onAction="#start" text="Start" />
+              </children>
+              <padding>
+                <Insets />
+              </padding>
+            </Pane>
           </children>
         </Pane>
       </center>
       <left>
-        <Pane prefHeight="489.0" prefWidth="201.0">
+        <Pane prefHeight="489.0" prefWidth="201.0" style="-fx-border-color:black;" BorderPane.margin="$x2">
           <children>
-            <Pane layoutX="0.0" layoutY="147.0" prefHeight="273.0" prefWidth="200.0">
-              <children>
-                <Label layoutX="72.0" layoutY="42.0" text="Label" />
-                <Slider layoutX="30.0" layoutY="96.0" />
-              </children>
-            </Pane>
+            <Button fx:id="rotateButton" layoutX="33.0" layoutY="288.0" mnemonicParsing="false" onAction="#rotateImage" text="Rotate" />
+            <CheckBox fx:id="separatelyBox" disable="false" layoutX="14.0" layoutY="22.0" mnemonicParsing="false" onAction="#selectSeparately" text="Separately" />
+            <CheckBox fx:id="collectivelyBox" layoutX="101.0" layoutY="22.0" mnemonicParsing="false" onAction="#selectCollectively" selected="true" text="Collectively" />
           </children>
         </Pane>
       </left>
       <right>
-        <Pane prefHeight="200.0" prefWidth="200.0">
-          <children>
-            <Button fx:id="rotateButton" layoutX="94.0" layoutY="210.0" mnemonicParsing="false" onAction="#rotateImage" text="Rotate" />
-          </children>
-        </Pane>
+        <Pane prefHeight="498.0" prefWidth="168.0" />
       </right>
       <top>
         <MenuBar prefWidth="800.0">

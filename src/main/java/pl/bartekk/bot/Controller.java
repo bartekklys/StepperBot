@@ -4,10 +4,13 @@ import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -18,9 +21,17 @@ public class Controller {
     public MenuItem aboutItem;
     public Button button;
     public ComboBox portID;
+    public ComboBox motor1Direction;
     public Label statusLabel;
     public ImageView motor1;
     public Button rotateButton;
+    public Slider motor1Speed;
+    public Button motor1StartButton;
+
+    public CheckBox separatelyBox;
+    public CheckBox collectivelyBox;
+
+    public Pane motor2Pane;
 
     public void handleConnectButtonClick() {
         if (statusLabel.getText().equals(ConnectionStatus.DISCONNECTED)) {
@@ -61,5 +72,22 @@ public class Controller {
         } else {
             rotateTransition.play();
         }
+    }
+
+    public void start() {
+        System.out.println(motor1Direction.getValue());
+        System.out.println(motor1Speed.getValue());
+    }
+
+    public void selectSeparately() {
+        separatelyBox.setSelected(true);
+        collectivelyBox.setSelected(false);
+        motor2Pane.setDisable(false);
+    }
+
+    public void selectCollectively() {
+        collectivelyBox.setSelected(true);
+        separatelyBox.setSelected(false);
+        motor2Pane.setDisable(true);
     }
 }
