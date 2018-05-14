@@ -1,132 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
-
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="pl.bartekk.bot.Controller">
-  <children>
-    <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="true">
-      <bottom>
-        <Pane id="" disable="false" prefHeight="68.0" prefWidth="778.0" style="-fx-border-color:black;">
-          <children>
-            <Label layoutX="124.0" layoutY="37.0" text="Port:">
-              <font>
-                <Font name="System Bold" size="16.0" fx:id="x1" />
-              </font>
-            </Label>
-            <ComboBox fx:id="portID" layoutX="201.0" layoutY="37.0" prefHeight="21.0" prefWidth="184.0" promptText="COM5">
-              <items>
-                <FXCollections fx:factory="observableArrayList">
-                  <String fx:value="COM 3" />
-                  <String fx:value="COM 4" />
-                  <String fx:value="COM 5" />
-                </FXCollections>
-              </items>
-            </ComboBox>
-            <Button fx:id="button" layoutX="411.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleConnectButtonClick" prefWidth="155.0" text="Connect" />
-            <Label fx:id="statusLabel" font="$x1" layoutX="583.0" layoutY="38.0" text="Disconnected" textFill="RED" wrapText="false" />
-            <Label layoutX="124.0" layoutY="9.0" text="FEM file path:" />
-            <Button layoutX="201.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFile" prefWidth="184.0" text="Choose file" />
-          </children>
-          <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2" />
-          </BorderPane.margin>
-        </Pane>
-      </bottom>
-      <center>
-        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.margin="$x2">
-          <children>
-            <Pane layoutX="-1.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="201.0" style="-fx-border-color:black;">
-              <children>
-                <ImageView fx:id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="25.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                    <Image url="@images/circle.png" />
-                  </image>
-                </ImageView>
-                <ComboBox fx:id="motor1Direction" layoutX="25.0" layoutY="223.0" prefHeight="21.0" prefWidth="140.0">
-                  <items>
-                    <FXCollections fx:factory="observableArrayList">
-                      <String fx:value="Clockwise" />
-                      <String fx:value="Anticlockwise" />
-                    </FXCollections>
-                  </items>
-                </ComboBox>
-                <Slider fx:id="motor1Speed" layoutX="25.0" layoutY="278.0" majorTickUnit="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
-                <Label layoutX="25.0" layoutY="336.0" text="Speed:" />
-                <TextField layoutX="80.0" layoutY="333.0" prefWidth="95.0" text="${motor1Speed.value}" />
-                <Button fx:id="motor1StartButton" layoutX="72.0" layoutY="444.0" mnemonicParsing="false" onAction="#start" text="Start" />
-              </children>
-              <padding>
-                <Insets />
-              </padding>
-            </Pane>
-            <Pane fx:id="motor2Pane" disable="true" layoutX="207.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="201.0" style="-fx-border-color:black;">
-              <children>
-                <ImageView id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="26.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                    <Image url="@images/circle.png" />
-                  </image>
-                </ImageView>
-                <ComboBox id="motor1Direction" layoutX="25.0" layoutY="223.0" prefHeight="21.0" prefWidth="140.0">
-                  <items>
-                    <FXCollections fx:factory="observableArrayList">
-                      <String fx:value="Clockwise" />
-                      <String fx:value="Anticlockwise" />
-                    </FXCollections>
-                  </items>
-                </ComboBox>
-                <Slider id="motor1Speed" layoutX="25.0" layoutY="278.0" majorTickUnit="1.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
-                <Label layoutX="25.0" layoutY="336.0" text="Speed:" />
-                <TextField layoutX="80.0" layoutY="333.0" prefWidth="95.0" text="${motor1Speed.value}" />
-                <Button id="motor1StartButton" layoutX="72.0" layoutY="444.0" mnemonicParsing="false" onAction="#start" text="Start" />
-              </children>
-              <padding>
-                <Insets />
-              </padding>
-            </Pane>
-          </children>
-        </Pane>
-      </center>
-      <left>
-        <Pane prefHeight="489.0" prefWidth="201.0" style="-fx-border-color:black;" BorderPane.margin="$x2">
-          <children>
-            <Button fx:id="rotateButton" layoutX="33.0" layoutY="288.0" mnemonicParsing="false" onAction="#rotateImage" text="Rotate" />
-            <CheckBox fx:id="separatelyBox" disable="false" layoutX="14.0" layoutY="22.0" mnemonicParsing="false" onAction="#selectSeparately" text="Separately" />
-            <CheckBox fx:id="collectivelyBox" layoutX="101.0" layoutY="22.0" mnemonicParsing="false" onAction="#selectCollectively" selected="true" text="Collectively" />
-          </children>
-        </Pane>
-      </left>
-      <right>
-        <Pane prefHeight="498.0" prefWidth="168.0" />
-      </right>
-      <top>
-        <MenuBar prefWidth="800.0">
-          <menus>
-            <Menu mnemonicParsing="false" text="File">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Close" />
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Edit">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Delete" />
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#showAboutMessageDialog" text="About..." fx:id="aboutItem" />
-              </items>
-            </Menu>
-          </menus>
-        </MenuBar>
-      </top>
-    </BorderPane>
-  </children>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import java.lang.String?>
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/2.2" fx:controller="pl.bartekk.bot.Controller">
+    <children>
+        <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="true">
+            <bottom>
+                <Pane id="" disable="false" prefHeight="68.0" prefWidth="778.0" style="-fx-border-color:black;">
+                    <children>
+                        <Label layoutX="124.0" layoutY="37.0" text="Port:">
+                            <font>
+                                <Font name="System Bold" size="16.0" fx:id="x1"/>
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="portID" layoutX="201.0" layoutY="37.0" prefHeight="21.0" prefWidth="184.0"
+                                  promptText="COM5">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="COM 3"/>
+                                    <String fx:value="COM 4"/>
+                                    <String fx:value="COM 5"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <Button fx:id="button" layoutX="411.0" layoutY="37.0" mnemonicParsing="false"
+                                onAction="#handleConnectButtonClick" prefWidth="155.0" text="Connect"/>
+                        <Label fx:id="statusLabel" font="$x1" layoutX="583.0" layoutY="38.0" text="Disconnected"
+                               textFill="RED" wrapText="false"/>
+                        <Label layoutX="124.0" layoutY="9.0" text="FEM file path:"/>
+                        <Button layoutX="201.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFile"
+                                prefWidth="184.0" text="Choose file"/>
+                    </children>
+                    <BorderPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2"/>
+                    </BorderPane.margin>
+                </Pane>
+            </bottom>
+            <center>
+                <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.margin="$x2">
+                    <children>
+                        <Pane layoutX="-1.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="201.0"
+                              style="-fx-border-color:black;">
+                            <children>
+                                <ImageView fx:id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="25.0"
+                                           layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/circle.png"/>
+                                    </image>
+                                </ImageView>
+                                <ComboBox fx:id="motor1Direction" layoutX="25.0" layoutY="223.0" prefHeight="21.0"
+                                          prefWidth="140.0">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Clockwise"/>
+                                            <String fx:value="Anticlockwise"/>
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                                <Slider fx:id="motor1Speed" layoutX="25.0" layoutY="278.0" majorTickUnit="1.0"
+                                        minorTickCount="1" showTickLabels="true" showTickMarks="true"
+                                        snapToTicks="false"/>
+                                <Label layoutX="25.0" layoutY="336.0" text="Speed:"/>
+                                <TextField layoutX="80.0" layoutY="333.0" prefWidth="95.0" text="${motor1Speed.value}"/>
+                                <Button fx:id="motor1StartButton" layoutX="72.0" layoutY="444.0" mnemonicParsing="false"
+                                        onAction="#start" text="Start"/>
+                            </children>
+                            <padding>
+                                <Insets/>
+                            </padding>
+                        </Pane>
+                        <Pane fx:id="motor2Pane" disable="true" layoutX="207.0" layoutY="0.0"
+                              prefHeight="487.9999000000025" prefWidth="201.0" style="-fx-border-color:black;">
+                            <children>
+                                <ImageView id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="26.0" layoutY="29.0"
+                                           pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@images/circle.png"/>
+                                    </image>
+                                </ImageView>
+                                <ComboBox id="motor1Direction" layoutX="25.0" layoutY="223.0" prefHeight="21.0"
+                                          prefWidth="140.0">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Clockwise"/>
+                                            <String fx:value="Anticlockwise"/>
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                                <Slider id="motor1Speed" layoutX="25.0" layoutY="278.0" majorTickUnit="1.0"
+                                        minorTickCount="1" showTickLabels="true" showTickMarks="true"
+                                        snapToTicks="false"/>
+                                <Label layoutX="25.0" layoutY="336.0" text="Speed:"/>
+                                <TextField layoutX="80.0" layoutY="333.0" prefWidth="95.0" text="${motor1Speed.value}"/>
+                                <Button id="motor1StartButton" layoutX="72.0" layoutY="444.0" mnemonicParsing="false"
+                                        onAction="#start" text="Start"/>
+                            </children>
+                            <padding>
+                                <Insets/>
+                            </padding>
+                        </Pane>
+                    </children>
+                </Pane>
+            </center>
+            <left>
+                <Pane prefHeight="489.0" prefWidth="201.0" style="-fx-border-color:black;" BorderPane.margin="$x2">
+                    <children>
+                        <Button fx:id="rotateButton" layoutX="33.0" layoutY="288.0" mnemonicParsing="false"
+                                onAction="#rotateImage" text="Rotate"/>
+                        <CheckBox fx:id="separatelyBox" disable="false" layoutX="14.0" layoutY="22.0"
+                                  mnemonicParsing="false" onAction="#selectSeparately" text="Separately"/>
+                        <CheckBox fx:id="collectivelyBox" layoutX="101.0" layoutY="22.0" mnemonicParsing="false"
+                                  onAction="#selectCollectively" selected="true" text="Collectively"/>
+                    </children>
+                </Pane>
+            </left>
+            <right>
+                <Pane prefHeight="498.0" prefWidth="168.0"/>
+            </right>
+            <top>
+                <MenuBar prefWidth="800.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Close"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" onAction="#showAboutMessageDialog" text="About..."
+                                          fx:id="aboutItem"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </top>
+        </BorderPane>
+    </children>
 </AnchorPane>
