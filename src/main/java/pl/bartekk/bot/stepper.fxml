@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/2.2" fx:controller="pl.bartekk.bot.Controller">
+    <children>
+        <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="true">
+            <bottom>
+                <Pane prefHeight="50.0" prefWidth="600.0">
+                    <children>
+                        <Label layoutX="141.0" layoutY="20.0" text="Port:">
+                            <font>
+                                <Font name="System Bold" size="16.0" fx:id="x1"/>
+                            </font>
+                        </Label>
+                        <ComboBox fx:id="portID" layoutX="201.0" layoutY="18.0" prefHeight="21.0" prefWidth="184.0" promptText="COM5">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="COM 3"/>
+                                    <String fx:value="COM 4"/>
+                                    <String fx:value="COM 5"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                        <Button fx:id="button" layoutX="411.0" layoutY="19.0" mnemonicParsing="false" prefWidth="155.0"
+                                text="Connect" onAction="#handleConnectButtonClick"/>
+                        <Label fx:id="statusLabel" font="$x1" layoutX="592.0" layoutY="16.0" text="Disconnected" textFill="RED"
+                               wrapText="false"/>
+                    </children>
+                </Pane>
+            </bottom>
+            <left>
+                <Pane prefHeight="200.0" prefWidth="200.0"/>
+            </left>
+            <right>
+                <Pane prefHeight="200.0" prefWidth="200.0"/>
+            </right>
+            <top>
+                <MenuBar prefWidth="800.0">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Close"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Edit">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                            </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                            <items>
+                                <MenuItem mnemonicParsing="false" text="About"/>
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+            </top>
+        </BorderPane>
+    </children>
+</AnchorPane>
