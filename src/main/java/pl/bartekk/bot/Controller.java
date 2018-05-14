@@ -26,12 +26,18 @@ public class Controller {
     public ImageView motor1;
     public Button rotateButton;
     public Slider motor1Speed;
-    public Button motor1StartButton;
+    public Button startButton;
 
     public CheckBox separatelyBox;
     public CheckBox collectivelyBox;
 
     public Pane motor2Pane;
+    public Label timeLabel;
+
+    // pane
+    public Pane controlPane;
+    public Pane motorPane;
+    public Pane summaryPane;
 
     public void handleConnectButtonClick() {
         if (statusLabel.getText().equals(ConnectionStatus.DISCONNECTED)) {
@@ -39,13 +45,21 @@ public class Controller {
             button.setText("Disconnect");
             statusLabel.setTextFill(Paint.valueOf("GREEN"));
             portID.setDisable(true);
+            disableDashboard(false);
         } else if (statusLabel.getText().equals(ConnectionStatus.CONNECTED)) {
             statusLabel.setText(ConnectionStatus.DISCONNECTED);
             button.setText("Connect");
             statusLabel.setTextFill(Paint.valueOf("RED"));
             portID.setDisable(false);
+            disableDashboard(true);
         }
         System.out.println(portID.getValue());
+    }
+
+    private void disableDashboard(boolean disable) {
+        controlPane.setDisable(disable);
+        motorPane.setDisable(disable);
+        summaryPane.setDisable(disable);
     }
 
     public void chooseFile() {
@@ -75,8 +89,23 @@ public class Controller {
     }
 
     public void start() {
+
+        if (startButton.getText().equals("Start")) {
+            startButton.setTextFill(Paint.valueOf("RED"));
+            startButton.setText("Stop");
+            motorPane.setDisable(true);
+        } else if (startButton.getText().equals("Stop")) {
+            startButton.setTextFill(Paint.valueOf("GREEN"));
+            startButton.setText("Start");
+            motorPane.setDisable(false);
+        }
+
+
+
+
         System.out.println(motor1Direction.getValue());
         System.out.println(motor1Speed.getValue());
+
     }
 
     public void selectSeparately() {
