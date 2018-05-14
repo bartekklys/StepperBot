@@ -21,12 +21,13 @@ import org.ardulink.util.URIs;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 public class Controller {
 
     // FIXME: 14.05.2018
-//    Link link = Links.getLink(URIs.newURI("ardulink://serial?port=COM5&baudrate=9600&pingprobe=false"));
-    Link link = Links.getLink(URIs.newURI("ardulink://serial-jssc?port=COM5&baudrate=9600&pingprobe=false"));
+    private Link link;
+
 
     private static String FEM_FILE_PATH = "n/a";
 
@@ -57,12 +58,17 @@ public class Controller {
 
     public void handleConnectButtonClick() {
         if (statusLabel.getText().equals(ConnectionStatus.DISCONNECTED)) {
+
+            String URI = "ardulink://serial-jssc?baudrate=9600&pingprobe=false&port=";
+            String resultURI = URI.concat(portID.getValue().toString().replaceAll("\\s+",""));
+            link = Links.getLink(URIs.newURI(resultURI));
             statusLabel.setText(ConnectionStatus.CONNECTED);
             button.setText("Disconnect");
             statusLabel.setTextFill(Paint.valueOf("GREEN"));
             portID.setDisable(true);
             disableDashboard(false);
         } else if (statusLabel.getText().equals(ConnectionStatus.CONNECTED)) {
+            link = null;
             statusLabel.setText(ConnectionStatus.DISCONNECTED);
             button.setText("Connect");
             statusLabel.setTextFill(Paint.valueOf("RED"));
@@ -124,13 +130,8 @@ public class Controller {
             startButton.setText("Start");
             motorPane.setDisable(false);
         }
-
-
-
-
         System.out.println(motor1Direction.getValue());
         System.out.println(motor1Speed.getValue());
-
     }
 
     public void selectSeparately() {
@@ -145,7 +146,18 @@ public class Controller {
         motor2Pane.setDisable(true);
     }
 
+    boolean x = true;
     public void testMethod() throws IOException {
-        link.sendCustomMessage("1");
+        if (x) {
+            if (link != null) {
+                link.sendCustomMessage("1");
+            }
+            x = false;
+        } else {
+            if (link != null) {
+                link.sendCustomMessage("0");
+            }
+            x = true;
+        }
     }
 }

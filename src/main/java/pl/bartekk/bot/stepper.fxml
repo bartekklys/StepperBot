@@ -19,7 +19,7 @@
                 <Font name="System Bold" size="16.0" fx:id="x1" />
               </font>
             </Label>
-            <ComboBox fx:id="portID" layoutX="201.0" layoutY="37.0" prefHeight="21.0" prefWidth="184.0" promptText="COM5">
+            <ComboBox fx:id="portID" layoutX="201.0" layoutY="37.0" prefHeight="21.0" prefWidth="184.0" promptText="" value="COM 5">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="COM 3" />
