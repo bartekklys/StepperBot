@@ -20,7 +20,7 @@ import java.io.File;
 
 public class Controller {
 
-    private static String FEM_FILE_PATH;
+    private static String FEM_FILE_PATH = "n/a";
 
     public MenuItem aboutItem;
     public Button button;
@@ -79,9 +79,10 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         File selectedFile = fileChooser.showOpenDialog(new Stage());
-        FEM_FILE_PATH = selectedFile.getAbsolutePath();
+        if (selectedFile != null) {
+            FEM_FILE_PATH = selectedFile.getAbsolutePath();
+        }
         selectedFilePath.setText(FEM_FILE_PATH);
-        System.out.println(FEM_FILE_PATH);
     }
 
     public void showAboutMessageDialog() {
