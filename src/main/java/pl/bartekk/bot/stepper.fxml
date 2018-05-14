@@ -9,71 +9,68 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="pl.bartekk.bot.Controller">
-    <children>
-        <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="true">
-            <bottom>
-                <Pane id="" disable="false" prefHeight="75.0" prefWidth="800.0">
-                    <children>
-                        <Label layoutX="124.0" layoutY="37.0" text="Port:">
-                            <font>
-                                <Font name="System Bold" size="16.0" fx:id="x1" />
-                            </font>
-                        </Label>
-                        <ComboBox fx:id="portID" layoutX="201.0" layoutY="37.0" prefHeight="21.0" prefWidth="184.0" promptText="COM5">
-                            <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                    <String fx:value="COM 3" />
-                                    <String fx:value="COM 4" />
-                                    <String fx:value="COM 5" />
-                                </FXCollections>
-                            </items>
-                        </ComboBox>
-                        <Button fx:id="button" layoutX="411.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleConnectButtonClick" prefWidth="155.0" text="Connect" />
-                        <Label fx:id="statusLabel" font="$x1" layoutX="583.0" layoutY="38.0" text="Disconnected" textFill="RED" wrapText="false" />
-                        <TextField layoutX="201.0" layoutY="6.0" prefWidth="184.0" />
-                        <Label layoutX="124.0" layoutY="9.0" text="FEM file path:" />
-                    </children>
-                </Pane>
-            </bottom>
-            <center>
-                <Button mnemonicParsing="false" text="Button" onAction="#chooseFile"/>
-            </center>
-            <left>
-                <Pane prefHeight="200.0" prefWidth="200.0">
-                    <children>
-                        <Pane layoutX="0.0" layoutY="147.0" prefHeight="273.0" prefWidth="200.0">
-                            <children>
-                                <Label layoutX="72.0" layoutY="42.0" text="Label" />
-                                <Slider layoutX="30.0" layoutY="96.0" />
-                            </children>
-                        </Pane>
-                    </children>
-                </Pane>
-            </left>
-            <right>
-                <Pane prefHeight="200.0" prefWidth="200.0" />
-            </right>
-            <top>
-                <MenuBar prefWidth="800.0">
-                    <menus>
-                        <Menu mnemonicParsing="false" text="File">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Close" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Edit">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Delete" />
-                            </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Help">
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="About" />
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-            </top>
-        </BorderPane>
-    </children>
+  <children>
+    <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="true">
+      <bottom>
+        <Pane id="" disable="false" prefHeight="75.0" prefWidth="800.0">
+          <children>
+            <Label layoutX="124.0" layoutY="37.0" text="Port:">
+              <font>
+                <Font name="System Bold" size="16.0" fx:id="x1" />
+              </font>
+            </Label>
+            <ComboBox fx:id="portID" layoutX="201.0" layoutY="37.0" prefHeight="21.0" prefWidth="184.0" promptText="COM5">
+              <items>
+                <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="COM 3" />
+                  <String fx:value="COM 4" />
+                  <String fx:value="COM 5" />
+                </FXCollections>
+              </items>
+            </ComboBox>
+            <Button fx:id="button" layoutX="411.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleConnectButtonClick" prefWidth="155.0" text="Connect" />
+            <Label fx:id="statusLabel" font="$x1" layoutX="583.0" layoutY="38.0" text="Disconnected" textFill="RED" wrapText="false" />
+            <Label layoutX="124.0" layoutY="9.0" text="FEM file path:" />
+            <Button layoutX="201.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFile" prefWidth="184.0" text="Choose file" />
+          </children>
+        </Pane>
+      </bottom>
+      <left>
+        <Pane prefHeight="200.0" prefWidth="200.0">
+          <children>
+            <Pane layoutX="0.0" layoutY="147.0" prefHeight="273.0" prefWidth="200.0">
+              <children>
+                <Label layoutX="72.0" layoutY="42.0" text="Label" />
+                <Slider layoutX="30.0" layoutY="96.0" />
+              </children>
+            </Pane>
+          </children>
+        </Pane>
+      </left>
+      <right>
+        <Pane prefHeight="200.0" prefWidth="200.0" />
+      </right>
+      <top>
+        <MenuBar prefWidth="800.0">
+          <menus>
+            <Menu mnemonicParsing="false" text="File">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Close" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Delete" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem fx:id="aboutItem" mnemonicParsing="false" text="About..." onAction="#showAboutMessageDialog"/>
+              </items>
+            </Menu>
+          </menus>
+        </MenuBar>
+      </top>
+    </BorderPane>
+  </children>
 </AnchorPane>
