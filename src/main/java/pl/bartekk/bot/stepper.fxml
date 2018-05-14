@@ -4,6 +4,7 @@
 <?import java.util.*?>
 <?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
@@ -35,8 +36,24 @@
           </children>
         </Pane>
       </bottom>
-      <left>
+      <center>
         <Pane prefHeight="200.0" prefWidth="200.0">
+          <children>
+            <ImageView fx:id="motor1" fitHeight="150.0" fitWidth="200.0" layoutX="21.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@images/circle.png" />
+              </image>
+            </ImageView>
+            <ImageView id="motor2" fitHeight="150.0" fitWidth="200.0" layoutX="218.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@images/circle.png" />
+              </image>
+            </ImageView>
+          </children>
+        </Pane>
+      </center>
+      <left>
+        <Pane prefHeight="489.0" prefWidth="201.0">
           <children>
             <Pane layoutX="0.0" layoutY="147.0" prefHeight="273.0" prefWidth="200.0">
               <children>
@@ -48,7 +65,11 @@
         </Pane>
       </left>
       <right>
-        <Pane prefHeight="200.0" prefWidth="200.0" />
+        <Pane prefHeight="200.0" prefWidth="200.0">
+          <children>
+            <Button fx:id="rotateButton" layoutX="94.0" layoutY="210.0" mnemonicParsing="false" onAction="#rotateImage" text="Rotate" />
+          </children>
+        </Pane>
       </right>
       <top>
         <MenuBar prefWidth="800.0">
@@ -65,7 +86,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
               <items>
-                <MenuItem fx:id="aboutItem" mnemonicParsing="false" text="About..." onAction="#showAboutMessageDialog"/>
+                <MenuItem mnemonicParsing="false" onAction="#showAboutMessageDialog" text="About..." fx:id="aboutItem" />
               </items>
             </Menu>
           </menus>
