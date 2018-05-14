@@ -16,6 +16,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+
 public class Controller {
 
     public MenuItem aboutItem;
@@ -65,7 +67,9 @@ public class Controller {
     public void chooseFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
-        fileChooser.showOpenDialog(new Stage());
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        System.out.println("DUPA " + selectedFile.getAbsolutePath());
     }
 
     public void showAboutMessageDialog() {
