@@ -44,7 +44,7 @@
         </Pane>
       </bottom>
       <center>
-        <Pane id="motor1Pane" fx:id="motorPane" disable="false" prefHeight="200.0" prefWidth="200.0" BorderPane.margin="$x2">
+        <Pane id="motor1Pane" fx:id="motorPane" disable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.margin="$x2">
           <children>
             <Pane fx:id="motor1Pane" layoutX="-2.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="235.0" style="-fx-border-color:black;">
               <children>
@@ -53,18 +53,10 @@
                     <Image url="@images/circle.png" />
                   </image>
                 </ImageView>
-                <ComboBox id="motor1Direction" fx:id="motor1DirectionComboBox" layoutX="48.0" layoutY="223.0" prefHeight="21.0" prefWidth="140.0">
-                  <items>
-                    <FXCollections fx:factory="observableArrayList">
-                      <String fx:value="Clockwise" />
-                      <String fx:value="Anticlockwise" />
-                    </FXCollections>
-                  </items>
-                </ComboBox>
-                <Slider id="motor1Speed" fx:id="motor1SpeedSlider" layoutX="48.0" layoutY="278.0" majorTickUnit="10.0" minorTickCount="10" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
+                <Slider id="motor1Speed" fx:id="motor1SpeedSlider" layoutX="48.0" layoutY="278.0" majorTickUnit="50.0" min="-100.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
                 <Label layoutX="43.0" layoutY="336.0" text="Speed:" />
                 <TextField fx:id="speed1TestField" layoutX="98.0" layoutY="333.0" prefWidth="95.0" text="${motor1SpeedSlider.value}" />
-                <Label layoutX="14.0" layoutY="6.0" text="Motor 1" />
+                <Label fx:id="motor1Label" layoutX="14.0" layoutY="6.0" text="Motor 1 &amp; 2" />
                 <Label layoutX="43.0" layoutY="364.0" text="Spool:" />
                 <TextField layoutX="98.0" layoutY="361.0" prefWidth="95.0" />
                 <Button fx:id="copyToMotor2Button" layoutX="81.0" layoutY="453.0" mnemonicParsing="false" onAction="#handleCopyToMotor2Button" prefWidth="140.0" text="Copy to Motor 2 &gt;&gt;" />
@@ -73,25 +65,17 @@
                 <Insets />
               </padding>
             </Pane>
-            <Pane id="motor1Pane" fx:id="motor2Pane" layoutX="235.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="235.0" style="-fx-border-color:black;">
+            <Pane id="motor1Pane" fx:id="motor2Pane" disable="true" layoutX="235.0" layoutY="0.0" prefHeight="487.9999000000025" prefWidth="235.0" style="-fx-border-color:black;">
               <children>
                 <ImageView id="motor1" fx:id="motor2Image" fitHeight="150.0" fitWidth="200.0" layoutX="43.0" layoutY="29.0" opacity="0.25" pickOnBounds="true" preserveRatio="true">
                   <image>
                     <Image url="@images/circle.png" />
                   </image>
                 </ImageView>
-                <ComboBox id="motor1Direction" fx:id="motor2DirectionComboBox" layoutX="48.0" layoutY="223.0" prefHeight="21.0" prefWidth="140.0">
-                  <items>
-                    <FXCollections fx:factory="observableArrayList">
-                      <String fx:value="Clockwise" />
-                      <String fx:value="Anticlockwise" />
-                    </FXCollections>
-                  </items>
-                </ComboBox>
-                <Slider id="motor1Speed" fx:id="motor2SpeedSlider" layoutX="48.0" layoutY="278.0" majorTickUnit="10.0" minorTickCount="10" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
+                <Slider id="motor1Speed" fx:id="motor2SpeedSlider" layoutX="48.0" layoutY="278.0" majorTickUnit="50.0" min="-100.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
                 <Label layoutX="43.0" layoutY="336.0" text="Speed:" />
                 <TextField id="speed1TestField" fx:id="speed2TestField" layoutX="98.0" layoutY="333.0" prefWidth="95.0" text="${motor2SpeedSlider.value}" />
-                <Label layoutX="14.0" layoutY="6.0" text="Motor 2" />
+                <Label fx:id="motor2Label" layoutX="14.0" layoutY="6.0" text="n/a" />
                 <Label layoutX="43.0" layoutY="364.0" text="Spool:" />
                 <TextField layoutX="98.0" layoutY="361.0" prefWidth="95.0" />
                 <Button fx:id="copyToMotor1Button" layoutX="14.0" layoutY="454.0" mnemonicParsing="false" onAction="#handleCopyToMotor1Button" prefWidth="140.0" text="&lt; &lt; Copy to Motor 1" />
@@ -104,7 +88,7 @@
         </Pane>
       </center>
       <left>
-        <Pane fx:id="controlPane" disable="false" prefHeight="489.0" prefWidth="150.0" style="-fx-border-color:black;" BorderPane.margin="$x2">
+        <Pane fx:id="controlPane" disable="true" prefHeight="489.0" prefWidth="150.0" style="-fx-border-color:black;" BorderPane.margin="$x2">
           <children>
             <Button fx:id="rotateButton" layoutX="33.0" layoutY="288.0" mnemonicParsing="false" onAction="#rotateImage" text="Rotate" />
             <CheckBox fx:id="separatelyBox" disable="false" layoutX="14.0" layoutY="68.0" mnemonicParsing="false" onAction="#selectSeparately" text="Separately" />

@@ -2,6 +2,7 @@ package pl.bartekk.bot;
 
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -36,14 +37,13 @@ public class Controller {
     public ComboBox portID;
     public CheckBox femCheckbox;
     public Button chooseFileButton;
+    public Label motor1Label;
+    public Label motor2Label;
 
     // slow start mode
     public CheckBox slowStartCheckBox;
     public TextField slowStartTextField;
     public Label slowStartModeLabel;
-
-    public ComboBox motor1DirectionComboBox;
-    public ComboBox motor2DirectionComboBox;
 
     public Label statusLabel;
     public Button rotateButton;
@@ -95,14 +95,12 @@ public class Controller {
 
     public void handleCopyToMotor2Button() {
         if (!motor2Pane.isDisabled()) {
-            motor2DirectionComboBox.setValue(motor1DirectionComboBox.getValue());
             motor2SpeedSlider.setValue(motor1SpeedSlider.getValue());
         }
     }
 
     public void handleCopyToMotor1Button() {
         // do not need to check if Motor 1 Pane i enabled (always is)
-        motor1DirectionComboBox.setValue(motor2DirectionComboBox.getValue());
         motor1SpeedSlider.setValue(motor2SpeedSlider.getValue());
     }
 
@@ -146,7 +144,6 @@ public class Controller {
         motorPane.setDisable(disable);
         summaryPane.setDisable(disable);
         motor1Image.setOpacity(opacity);
-        motor2Image.setOpacity(opacity);
     }
 
     public void chooseFile() {
@@ -185,14 +182,20 @@ public class Controller {
     }
 
     public void rotateImage() {
-
-        RotateTransition rotateTransition = new RotateTransition(Duration.seconds(10), motor1Image);
-        rotateTransition.setFromAngle(0);
-        rotateTransition.setToAngle(3600);
-        if (rotateTransition.getStatus() == Animation.Status.RUNNING) {
-            rotateTransition.pause();
+        RotateTransition rotateTransition1 = new RotateTransition(Duration.seconds(10), motor1Image);
+        RotateTransition rotateTransition2 = new RotateTransition(Duration.seconds(10), motor2Image);
+        rotateTransition1.setFromAngle(0);
+        rotateTransition1.setToAngle(3600);
+        rotateTransition2.setFromAngle(0);
+        rotateTransition2.setToAngle(3600);
+        if (rotateTransition1.getStatus() == Animation.Status.RUNNING) {
+            rotateTransition1.pause();
+            rotateTransition2.pause();
         } else {
-            rotateTransition.play();
+            rotateTransition1.play();
+            if (!motor2Pane.isDisabled()) {
+                rotateTransition2.play();
+            }
         }
     }
 
@@ -202,12 +205,13 @@ public class Controller {
             startButton.setTextFill(Paint.valueOf("RED"));
             startButton.setText("Stop");
             motorPane.setDisable(true);
+            motor1Image.setOpacity(0.25);
         } else if (startButton.getText().equals("Stop")) {
             startButton.setTextFill(Paint.valueOf("GREEN"));
             startButton.setText("Start");
             motorPane.setDisable(false);
+            motor1Image.setOpacity(1);
         }
-        System.out.println(motor1DirectionComboBox.getValue());
         System.out.println(motor1SpeedSlider.getValue());
     }
 
@@ -215,12 +219,18 @@ public class Controller {
         separatelyBox.setSelected(true);
         collectivelyBox.setSelected(false);
         motor2Pane.setDisable(false);
+        motor2Image.setOpacity(1);
+        motor1Label.setText("Motor 1");
+        motor2Label.setText("Motor 2");
     }
 
     public void selectCollectively() {
         collectivelyBox.setSelected(true);
         separatelyBox.setSelected(false);
         motor2Pane.setDisable(true);
+        motor2Image.setOpacity(0.25);
+        motor1Label.setText("Motor 1 & 2");
+        motor2Label.setText("n/a");
     }
 
     boolean x = true;
