@@ -9,6 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -58,8 +59,8 @@ public class Controller {
     public ImageView motor1Image;
     public ImageView motor2Image;
 
-    public CheckBox separatelyBox;
-    public CheckBox collectivelyBox;
+    public RadioButton separatelyRadioButton;
+    public RadioButton collectivelyRadioButton;
 
     public Pane motor2Pane;
     public Label timeLabel;
@@ -205,31 +206,31 @@ public class Controller {
             startButton.setTextFill(Paint.valueOf("RED"));
             startButton.setText("Stop");
             motorPane.setDisable(true);
-            motor1Image.setOpacity(0.25);
         } else if (startButton.getText().equals("Stop")) {
             startButton.setTextFill(Paint.valueOf("GREEN"));
             startButton.setText("Start");
             motorPane.setDisable(false);
-            motor1Image.setOpacity(1);
         }
         System.out.println(motor1SpeedSlider.getValue());
     }
 
     public void selectSeparately() {
-        separatelyBox.setSelected(true);
-        collectivelyBox.setSelected(false);
+        separatelyRadioButton.setSelected(true);
+        collectivelyRadioButton.setSelected(false);
         motor2Pane.setDisable(false);
         motor2Image.setOpacity(1);
         motor1Label.setText("Motor 1");
         motor2Label.setText("Motor 2");
+        copyToMotor2Button.setDisable(false);
     }
 
     public void selectCollectively() {
-        collectivelyBox.setSelected(true);
-        separatelyBox.setSelected(false);
+        collectivelyRadioButton.setSelected(true);
+        separatelyRadioButton.setSelected(false);
         motor2Pane.setDisable(true);
         motor1Label.setText("Motor 1 & 2");
         motor2Label.setText("n/a");
+        copyToMotor2Button.setDisable(true);
     }
 
     boolean x = true;
