@@ -36,7 +36,7 @@
             <Label layoutX="411.0" layoutY="9.0" prefWidth="72.0" text="Selected file:" />
             <Label fx:id="selectedFilePath" layoutX="491.0" layoutY="9.0" prefWidth="287.0" text="n/a" />
             <CheckBox id="FemCheckbox" fx:id="femCheckbox" layoutX="61.0" layoutY="9.0" mnemonicParsing="false" onAction="#handleFemCheckbox" selected="false" text="FEM file" />
-            <ProgressIndicator fx:id="connectionProgressIndicator" disable="false" focusTraversable="false" layoutX="579.0" layoutY="27.0" minWidth="19.0" prefHeight="30.999900000002526" prefWidth="46.999977929684974" progress="-1.0" visible="false"/>
+            <ProgressIndicator fx:id="connectionProgressIndicator" disable="false" focusTraversable="false" layoutX="579.0" layoutY="27.0" minWidth="19.0" prefHeight="30.999900000002526" prefWidth="46.999977929684974" progress="-1.0" visible="false" />
           </children>
           <BorderPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2" />
@@ -104,7 +104,7 @@
         </Pane>
       </center>
       <left>
-        <Pane fx:id="controlPane" disable="true" prefHeight="489.0" prefWidth="150.0" style="-fx-border-color:black;" BorderPane.margin="$x2">
+        <Pane fx:id="controlPane" disable="false" prefHeight="489.0" prefWidth="150.0" style="-fx-border-color:black;" BorderPane.margin="$x2">
           <children>
             <Button fx:id="rotateButton" layoutX="33.0" layoutY="288.0" mnemonicParsing="false" onAction="#rotateImage" text="Rotate" />
             <CheckBox fx:id="separatelyBox" disable="false" layoutX="14.0" layoutY="68.0" mnemonicParsing="false" onAction="#selectSeparately" text="Separately" />
@@ -115,6 +115,9 @@
                 <Font name="Arial" size="24.0" />
               </font>
             </Button>
+            <CheckBox fx:id="slowStartCheckBox" layoutX="14.0" layoutY="170.0" mnemonicParsing="false" onAction="#handleSlowStartModeButton" text="Slow start mode" />
+            <TextField fx:id="slowStartTextField" disable="true" layoutX="36.0" layoutY="198.0" prefWidth="45.0" text="0" visible="true" />
+            <Label fx:id="slowStartModeLabel" disable="true" layoutX="89.0" layoutY="201.0" text="sec" visible="true" />
           </children>
         </Pane>
       </left>

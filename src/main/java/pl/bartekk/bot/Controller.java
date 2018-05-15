@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -20,12 +21,13 @@ import org.ardulink.core.Link;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Controller {
 
     // FIXME: 14.05.2018
     private Link link;
-
 
     private static String FEM_FILE_PATH = "n/a";
 
@@ -34,6 +36,11 @@ public class Controller {
     public ComboBox portID;
     public CheckBox femCheckbox;
     public Button chooseFileButton;
+
+    // slow start mode
+    public CheckBox slowStartCheckBox;
+    public TextField slowStartTextField;
+    public Label slowStartModeLabel;
 
     public ComboBox motor1DirectionComboBox;
     public ComboBox motor2DirectionComboBox;
@@ -65,6 +72,16 @@ public class Controller {
     public Pane summaryPane;
 
     public ProgressIndicator connectionProgressIndicator;
+
+    public void handleSlowStartModeButton() {
+        if (slowStartTextField.isDisabled()) {
+            slowStartTextField.setDisable(false);
+            slowStartModeLabel.setDisable(false);
+        } else {
+            slowStartTextField.setDisable(true);
+            slowStartModeLabel.setDisable(true);
+        }
+    }
 
     public void handleFemCheckbox() {
         if (chooseFileButton.isDisabled()) {
@@ -138,8 +155,17 @@ public class Controller {
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             FEM_FILE_PATH = selectedFile.getAbsolutePath();
+            selectedFilePath.setText(FEM_FILE_PATH);
+            String content = "";
+            try {
+                content = new String(Files.readAllBytes(Paths.get(FEM_FILE_PATH)));
+            } catch (IOException e) {
+                // FIXME: 15.05.2018
+                e.printStackTrace();
+            }
+            System.out.println(content);
         }
-        selectedFilePath.setText(FEM_FILE_PATH);
+
     }
 
     public void showAboutMessageDialog() {
