@@ -61,7 +61,12 @@ public class Controller {
 
             String URI = "ardulink://serial-jssc?baudrate=9600&pingprobe=false&port=";
             String resultURI = URI.concat(portID.getValue().toString().replaceAll("\\s+",""));
-            link = Links.getLink(URIs.newURI(resultURI));
+            try {
+                link = Links.getLink(URIs.newURI(resultURI));
+            } catch (RuntimeException e) {
+                showConnectionErrorMessageDialog();
+                return;
+            }
             statusLabel.setText(ConnectionStatus.CONNECTED);
             button.setText("Disconnect");
             statusLabel.setTextFill(Paint.valueOf("GREEN"));
@@ -100,10 +105,18 @@ public class Controller {
     }
 
     public void showAboutMessageDialog() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("StepperBot Info");
         alert.setHeaderText("StepperBot v1");
         alert.setContentText("2018 Bartosz Kłys, WIMiIP\n" + "Email: klys.bartosz@gmail.com");
+        alert.show();
+    }
+
+    public void showConnectionErrorMessageDialog() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Connection error");
+        alert.setHeaderText("StepperBot v1");
+        alert.setContentText("Nie znaleziono podłączonego systemu Arduino.");
         alert.show();
     }
 
