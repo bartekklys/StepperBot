@@ -2,7 +2,6 @@ package pl.bartekk.bot;
 
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -144,6 +143,7 @@ public class Controller {
         motorPane.setDisable(disable);
         summaryPane.setDisable(disable);
         motor1Image.setOpacity(opacity);
+        motor2Image.setOpacity(opacity);
     }
 
     public void chooseFile() {
@@ -228,13 +228,13 @@ public class Controller {
         collectivelyBox.setSelected(true);
         separatelyBox.setSelected(false);
         motor2Pane.setDisable(true);
-        motor2Image.setOpacity(0.25);
         motor1Label.setText("Motor 1 & 2");
         motor2Label.setText("n/a");
     }
 
     boolean x = true;
 
+    // test method, should be deleted
     public void testMethod() throws IOException {
         if (x) {
             if (link != null) {
