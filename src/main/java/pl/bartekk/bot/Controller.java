@@ -16,12 +16,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.ardulink.core.Link;
-import org.ardulink.core.convenience.Links;
-import org.ardulink.util.URIs;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 
 public class Controller {
 
@@ -34,11 +31,19 @@ public class Controller {
     public MenuItem aboutItem;
     public Button button;
     public ComboBox portID;
-    public ComboBox motor1Direction;
+
+    public ComboBox motor1DirectionComboBox;
+    public ComboBox motor2DirectionComboBox;
+
     public Label statusLabel;
     public Button rotateButton;
-    public Slider motor1Speed;
+
+    // motor speed
+    public Slider motor1SpeedSlider;
+    public Slider motor2SpeedSlider;
+
     public Button startButton;
+    public Button copyToMotor2Button;
 
     // images
     public ImageView motor1Image;
@@ -56,13 +61,26 @@ public class Controller {
     public Pane motorPane;
     public Pane summaryPane;
 
+    public void handleCopyToMotor2Button() {
+        if (!motor2Pane.isDisabled()) {
+            motor2DirectionComboBox.setValue(motor1DirectionComboBox.getValue());
+            motor2SpeedSlider.setValue(motor1SpeedSlider.getValue());
+        }
+    }
+
+    public void handleCopyToMotor1Button() {
+        // do not need to check if Motor 1 Pane i enabled (always is)
+        motor1DirectionComboBox.setValue(motor2DirectionComboBox.getValue());
+        motor1SpeedSlider.setValue(motor2SpeedSlider.getValue());
+    }
+
     public void handleConnectButtonClick() {
         if (statusLabel.getText().equals(ConnectionStatus.DISCONNECTED)) {
 
             String URI = "ardulink://serial-jssc?baudrate=9600&pingprobe=false&port=";
-            String resultURI = URI.concat(portID.getValue().toString().replaceAll("\\s+",""));
+            String resultURI = URI.concat(portID.getValue().toString().replaceAll("\\s+", ""));
             try {
-                link = Links.getLink(URIs.newURI(resultURI));
+                //link = Links.getLink(URIs.newURI(resultURI));
             } catch (RuntimeException e) {
                 showConnectionErrorMessageDialog();
                 return;
@@ -143,8 +161,8 @@ public class Controller {
             startButton.setText("Start");
             motorPane.setDisable(false);
         }
-        System.out.println(motor1Direction.getValue());
-        System.out.println(motor1Speed.getValue());
+        System.out.println(motor1DirectionComboBox.getValue());
+        System.out.println(motor1SpeedSlider.getValue());
     }
 
     public void selectSeparately() {
@@ -160,6 +178,7 @@ public class Controller {
     }
 
     boolean x = true;
+
     public void testMethod() throws IOException {
         if (x) {
             if (link != null) {
