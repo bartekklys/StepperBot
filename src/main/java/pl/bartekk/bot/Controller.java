@@ -8,6 +8,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -31,6 +32,8 @@ public class Controller {
     public MenuItem aboutItem;
     public Button button;
     public ComboBox portID;
+    public CheckBox femCheckbox;
+    public Button chooseFileButton;
 
     public ComboBox motor1DirectionComboBox;
     public ComboBox motor2DirectionComboBox;
@@ -61,6 +64,18 @@ public class Controller {
     public Pane motorPane;
     public Pane summaryPane;
 
+    public ProgressIndicator connectionProgressIndicator;
+
+    public void handleFemCheckbox() {
+        if (chooseFileButton.isDisabled()) {
+            chooseFileButton.setDisable(false);
+        } else {
+            chooseFileButton.setDisable(true);
+            FEM_FILE_PATH = "n/a";
+            selectedFilePath.setText(FEM_FILE_PATH);
+        }
+    }
+
     public void handleCopyToMotor2Button() {
         if (!motor2Pane.isDisabled()) {
             motor2DirectionComboBox.setValue(motor1DirectionComboBox.getValue());
@@ -77,6 +92,9 @@ public class Controller {
     public void handleConnectButtonClick() {
         if (statusLabel.getText().equals(ConnectionStatus.DISCONNECTED)) {
 
+            connectionProgressIndicator.setVisible(true);
+            connectionProgressIndicator.setProgress(-1);
+
             String URI = "ardulink://serial-jssc?baudrate=9600&pingprobe=false&port=";
             String resultURI = URI.concat(portID.getValue().toString().replaceAll("\\s+", ""));
             try {
@@ -85,6 +103,7 @@ public class Controller {
                 showConnectionErrorMessageDialog();
                 return;
             }
+            connectionProgressIndicator.setProgress(1);
             statusLabel.setText(ConnectionStatus.CONNECTED);
             button.setText("Disconnect");
             statusLabel.setTextFill(Paint.valueOf("GREEN"));
@@ -92,6 +111,7 @@ public class Controller {
             disableDashboard(false);
         } else if (statusLabel.getText().equals(ConnectionStatus.CONNECTED)) {
             link = null;
+            connectionProgressIndicator.setVisible(false);
             statusLabel.setText(ConnectionStatus.DISCONNECTED);
             button.setText("Connect");
             statusLabel.setTextFill(Paint.valueOf("RED"));
