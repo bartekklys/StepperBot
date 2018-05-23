@@ -19,6 +19,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.ardulink.core.Link;
+import org.ardulink.core.convenience.Links;
+import org.ardulink.util.URIs;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +41,8 @@ public class Controller {
     public Button chooseFileButton;
     public Label motor1Label;
     public Label motor2Label;
+    public TextField speed1TestField;
+    public TextField speed2TestField;
 
     // slow start mode
     public CheckBox slowStartCheckBox;
@@ -113,7 +117,7 @@ public class Controller {
             String URI = "ardulink://serial-jssc?baudrate=9600&pingprobe=false&port=";
             String resultURI = URI.concat(portID.getValue().toString().replaceAll("\\s+", ""));
             try {
-                //link = Links.getLink(URIs.newURI(resultURI));
+//                link = Links.getLink(URIs.newURI(resultURI));
             } catch (RuntimeException e) {
                 showConnectionErrorMessageDialog();
                 return;
@@ -200,18 +204,29 @@ public class Controller {
         }
     }
 
-    public void start() {
+    public void start() throws IOException {
 
         if (startButton.getText().equals("Start")) {
+//            link.sendCustomMessage("1");
+            if (collectivelyRadioButton.isSelected()) {
+                int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
+                System.out.println(firstMotorSpeed + "," + firstMotorSpeed);
+
+            } else if (separatelyRadioButton.isSelected()) {
+                int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
+                int secondMotorSpeed = Double.valueOf(speed2TestField.getText()).intValue();
+                System.out.println(firstMotorSpeed + "," + secondMotorSpeed);
+            }
             startButton.setTextFill(Paint.valueOf("RED"));
             startButton.setText("Stop");
             motorPane.setDisable(true);
         } else if (startButton.getText().equals("Stop")) {
+//            link.sendCustomMessage("0");
+            System.out.println("0,0");
             startButton.setTextFill(Paint.valueOf("GREEN"));
             startButton.setText("Start");
             motorPane.setDisable(false);
         }
-        System.out.println(motor1SpeedSlider.getValue());
     }
 
     public void selectSeparately() {
@@ -237,16 +252,15 @@ public class Controller {
 
     // test method, should be deleted
     public void testMethod() throws IOException {
-        if (x) {
-            if (link != null) {
-                link.sendCustomMessage("1");
-            }
-            x = false;
-        } else {
-            if (link != null) {
-                link.sendCustomMessage("0");
-            }
-            x = true;
-        }
+        /*Double speed = motor1SpeedSlider.getValue();
+        int x = speed.intValue();
+        System.out.println(x);
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.valueOf(x));
+        sb.append("S");
+        sb.append(x);
+        System.out.println(sb.toString());*/
+//        link.sendCustomMessage("1");
+        System.out.println("TEST OK");
     }
 }
