@@ -19,8 +19,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.ardulink.core.Link;
-import org.ardulink.core.convenience.Links;
-import org.ardulink.util.URIs;
 
 import java.io.File;
 import java.io.IOException;
@@ -207,7 +205,6 @@ public class Controller {
     public void start() throws IOException {
 
         if (startButton.getText().equals("Start")) {
-//            link.sendCustomMessage("1");
             if (collectivelyRadioButton.isSelected()) {
                 int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
                 System.out.println(firstMotorSpeed + "," + firstMotorSpeed);
@@ -221,7 +218,6 @@ public class Controller {
             startButton.setText("Stop");
             motorPane.setDisable(true);
         } else if (startButton.getText().equals("Stop")) {
-//            link.sendCustomMessage("0");
             System.out.println("0,0");
             startButton.setTextFill(Paint.valueOf("GREEN"));
             startButton.setText("Start");
@@ -248,19 +244,8 @@ public class Controller {
         copyToMotor2Button.setDisable(true);
     }
 
-    boolean x = true;
-
-    // test method, should be deleted
-    public void testMethod() throws IOException {
-        /*Double speed = motor1SpeedSlider.getValue();
-        int x = speed.intValue();
-        System.out.println(x);
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.valueOf(x));
-        sb.append("S");
-        sb.append(x);
-        System.out.println(sb.toString());*/
-//        link.sendCustomMessage("1");
+    // TODO: 23.05.2018 test method, should be deleted
+    public void testMethod() {
         System.out.println("TEST OK");
     }
 }
