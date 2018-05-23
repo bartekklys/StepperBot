@@ -31,7 +31,7 @@
             <Button fx:id="button" layoutX="411.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleConnectButtonClick" prefWidth="155.0" text="Connect" />
             <Label fx:id="statusLabel" font="$x1" layoutX="641.0" layoutY="35.0" style="-fx-border-color:black;" text="Disconnected" textFill="RED" wrapText="false" />
             <Label layoutX="140.0" layoutY="9.0" text="File path:" />
-            <Button fx:id="chooseFileButton" disable="true" layoutX="201.0" layoutY="10.0" mnemonicParsing="false" onAction="#chooseFile" prefWidth="184.0" text="Choose file" />
+            <Button fx:id="chooseFileButton" disable="true" layoutX="201.0" layoutY="10.0" mnemonicParsing="false" onAction="#selectFemFile" prefWidth="184.0" text="Choose file" />
             <Button fx:id="testButton" layoutX="14.0" layoutY="36.0" mnemonicParsing="false" onAction="#testMethod" text="Test" />
             <Label layoutX="411.0" layoutY="9.0" prefWidth="72.0" text="Selected file:" />
             <Label fx:id="selectedFilePath" layoutX="491.0" layoutY="9.0" prefWidth="287.0" text="n/a" />

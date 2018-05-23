@@ -83,14 +83,18 @@ public class Controller {
 
     private Runnable helloRunnable;
     private ScheduledExecutorService executor;
+    private File selectedFile;
+    private String femFileContent;
 
     private void runFileChecker() {
         this.helloRunnable = new Runnable() {
             public void run() {
-                System.out.println("Hello world");
+                String tempContent = getFemFileContent();
+                if (!tempContent.equals(femFileContent)) {
+                    femFileContent = tempContent;
+                }
             }
         };
-
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(helloRunnable, 0, 1, TimeUnit.SECONDS);
     }
@@ -175,23 +179,26 @@ public class Controller {
         motor2Image.setOpacity(opacity);
     }
 
-    public void chooseFile() {
+    public void selectFemFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        selectedFile = fileChooser.showOpenDialog(new Stage());
+        femFileContent = getFemFileContent();
+    }
+
+    private String getFemFileContent() {
+        String content = "";
         if (selectedFile != null) {
             FEM_FILE_PATH = selectedFile.getAbsolutePath();
             selectedFilePath.setText(FEM_FILE_PATH);
-            String content = "";
             try {
                 content = new String(Files.readAllBytes(Paths.get(FEM_FILE_PATH)));
             } catch (IOException e) {
                 // FIXME: 15.05.2018
                 e.printStackTrace();
             }
-            System.out.println(content);
         }
-
+        return content;
     }
 
     public void showAboutMessageDialog() {
