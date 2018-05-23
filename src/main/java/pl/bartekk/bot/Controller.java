@@ -1,6 +1,7 @@
 package pl.bartekk.bot;
 
 import javafx.animation.Animation;
+import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -19,6 +20,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.ardulink.core.Link;
+import org.ardulink.core.convenience.Links;
+import org.ardulink.util.URIs;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,16 +90,28 @@ public class Controller {
     private String femFileContent;
 
     private void runFileChecker() {
-        this.helloRunnable = new Runnable() {
-            public void run() {
-                String tempContent = getFemFileContent();
-                if (!tempContent.equals(femFileContent)) {
-                    femFileContent = tempContent;
+        this.helloRunnable = () -> {
+            String tempContent = getFemFileContent();
+            if (!tempContent.equals(femFileContent)) {
+                femFileContent = tempContent;
+                try {
+                    link.sendCustomMessage(femFileContent);
+                    setSpeedValueToSliders(femFileContent);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };
         executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(helloRunnable, 0, 1, TimeUnit.SECONDS);
+    }
+
+    private void setSpeedValueToSliders(String femFileContent) {
+        if (!femFileContent.isEmpty()) {
+            String[] speedValues = femFileContent.split(",");
+            motor1SpeedSlider.setValue(Double.valueOf(speedValues[0]));
+            motor2SpeedSlider.setValue(Double.valueOf(speedValues[1]));
+        }
     }
 
     private void stopFileChecker() {
@@ -145,7 +160,7 @@ public class Controller {
             String URI = "ardulink://serial-jssc?baudrate=9600&pingprobe=false&port=";
             String resultURI = URI.concat(portID.getValue().toString().replaceAll("\\s+", ""));
             try {
-//                link = Links.getLink(URIs.newURI(resultURI));
+                link = Links.getLink(URIs.newURI(resultURI));
             } catch (RuntimeException e) {
                 showConnectionErrorMessageDialog();
                 return;
@@ -218,10 +233,12 @@ public class Controller {
     }
 
     public void rotateImage() {
-        rotateTransition1 = new RotateTransition(Duration.seconds(30), motor1Image);
-        rotateTransition2 = new RotateTransition(Duration.seconds(30), motor2Image);
+        rotateTransition1 = new RotateTransition(Duration.seconds(60), motor1Image);
+        rotateTransition2 = new RotateTransition(Duration.seconds(60), motor2Image);
         rotateTransition1.setToAngle(3600);
+        rotateTransition1.setInterpolator(Interpolator.LINEAR);
         rotateTransition2.setToAngle(3600);
+        rotateTransition2.setInterpolator(Interpolator.LINEAR);
         if (rotateTransition1.getStatus() == Animation.Status.RUNNING) {
             rotateTransition1.pause();
             rotateTransition2.pause();
@@ -298,7 +315,8 @@ public class Controller {
     }
 
     // TODO: 23.05.2018 test method, should be deleted
-    public void testMethod() {
+    public void testMethod() throws IOException {
         System.out.println("TEST OK");
+        link.sendCustomMessage("1");
     }
 }
