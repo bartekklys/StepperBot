@@ -72,7 +72,7 @@
                     <Image url="@images/circle.png" />
                   </image>
                 </ImageView>
-                <Slider id="motor1Speed" fx:id="motor2SpeedSlider" layoutX="48.0" layoutY="278.0" majorTickUnit="50.0" min="-100.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
+                <Slider id="motor1Speed" fx:id="motor2SpeedSlider" layoutX="48.0" layoutY="278.0" majorTickUnit="50.0" max="1000.0" min="-1000.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" snapToTicks="false" />
                 <Label layoutX="43.0" layoutY="336.0" text="Speed:" />
                 <TextField id="speed1TestField" fx:id="speed2TestField" layoutX="98.0" layoutY="333.0" prefWidth="95.0" text="${motor2SpeedSlider.value}" />
                 <Label fx:id="motor2Label" layoutX="14.0" layoutY="6.0" text="n/a" />

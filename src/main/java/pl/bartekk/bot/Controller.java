@@ -73,6 +73,9 @@ public class Controller {
     public Pane motorPane;
     public Pane summaryPane;
 
+    private RotateTransition rotateTransition1;
+    private RotateTransition rotateTransition2;
+
     public ProgressIndicator connectionProgressIndicator;
 
     public void handleSlowStartModeButton() {
@@ -185,21 +188,38 @@ public class Controller {
     }
 
     public void rotateImage() {
-        RotateTransition rotateTransition1 = new RotateTransition(Duration.seconds(10), motor1Image);
-        RotateTransition rotateTransition2 = new RotateTransition(Duration.seconds(10), motor2Image);
-        rotateTransition1.setFromAngle(0);
+        rotateTransition1 = new RotateTransition(Duration.seconds(30), motor1Image);
+        rotateTransition2 = new RotateTransition(Duration.seconds(30), motor2Image);
         rotateTransition1.setToAngle(3600);
-        rotateTransition2.setFromAngle(0);
         rotateTransition2.setToAngle(3600);
         if (rotateTransition1.getStatus() == Animation.Status.RUNNING) {
             rotateTransition1.pause();
             rotateTransition2.pause();
         } else {
-            rotateTransition1.play();
-            if (!motor2Pane.isDisabled()) {
+            int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
+            int secondMotorSpeed = Double.valueOf(speed2TestField.getText()).intValue();
+            if (firstMotorSpeed != 0) {
+                if (firstMotorSpeed < 0) {
+                    rotateTransition1.setToAngle(rotateTransition1.getToAngle() * -1);
+                } else {
+                    rotateTransition1.setToAngle(Math.abs(rotateTransition1.getToAngle()));
+                }
+                rotateTransition1.play();
+            }
+            if (secondMotorSpeed != 0) {
+                if (secondMotorSpeed < 0) {
+                    rotateTransition2.setToAngle(rotateTransition2.getToAngle() * -1);
+                } else {
+                    rotateTransition2.setToAngle(Math.abs(rotateTransition2.getToAngle()));
+                }
                 rotateTransition2.play();
             }
         }
+    }
+
+    public void stopRotating() {
+        rotateTransition1.pause();
+        rotateTransition2.pause();
     }
 
     public void start() throws IOException {
@@ -208,17 +228,20 @@ public class Controller {
             if (collectivelyRadioButton.isSelected()) {
                 int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
                 System.out.println(firstMotorSpeed + "," + firstMotorSpeed);
+                rotateImage();
 
             } else if (separatelyRadioButton.isSelected()) {
                 int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
                 int secondMotorSpeed = Double.valueOf(speed2TestField.getText()).intValue();
                 System.out.println(firstMotorSpeed + "," + secondMotorSpeed);
+                rotateImage();
             }
             startButton.setTextFill(Paint.valueOf("RED"));
             startButton.setText("Stop");
             motorPane.setDisable(true);
         } else if (startButton.getText().equals("Stop")) {
             System.out.println("0,0");
+            stopRotating();
             startButton.setTextFill(Paint.valueOf("GREEN"));
             startButton.setText("Start");
             motorPane.setDisable(false);
