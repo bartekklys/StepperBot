@@ -24,6 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Controller {
 
@@ -78,6 +81,24 @@ public class Controller {
 
     public ProgressIndicator connectionProgressIndicator;
 
+    private Runnable helloRunnable;
+    private ScheduledExecutorService executor;
+
+    private void runFileChecker() {
+        this.helloRunnable = new Runnable() {
+            public void run() {
+                System.out.println("Hello world");
+            }
+        };
+
+        executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(helloRunnable, 0, 1, TimeUnit.SECONDS);
+    }
+
+    private void stopFileChecker() {
+        this.executor.shutdown();
+    }
+
     public void handleSlowStartModeButton() {
         if (slowStartTextField.isDisabled()) {
             slowStartTextField.setDisable(false);
@@ -91,10 +112,12 @@ public class Controller {
     public void handleFemCheckbox() {
         if (chooseFileButton.isDisabled()) {
             chooseFileButton.setDisable(false);
+            runFileChecker();
         } else {
             chooseFileButton.setDisable(true);
             FEM_FILE_PATH = "n/a";
             selectedFilePath.setText(FEM_FILE_PATH);
+            stopFileChecker();
         }
     }
 
