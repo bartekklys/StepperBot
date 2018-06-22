@@ -224,8 +224,8 @@ public class Controller {
         String content = "";
         if (selectedFile != null) {
             FEM_FILE_PATH = selectedFile.getAbsolutePath();
-            selectedFilePath.setText(FEM_FILE_PATH);
             try {
+                selectedFilePath.setText(FEM_FILE_PATH);
                 content = new String(Files.readAllBytes(Paths.get(FEM_FILE_PATH)));
             } catch (IOException e) {
                 // FIXME: 15.05.2018
