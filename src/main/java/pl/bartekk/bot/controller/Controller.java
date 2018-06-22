@@ -1,5 +1,12 @@
-package pl.bartekk.bot;
+package pl.bartekk.bot.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
@@ -22,88 +29,73 @@ import javafx.util.Duration;
 import org.ardulink.core.Link;
 import org.ardulink.core.convenience.Links;
 import org.ardulink.util.URIs;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import pl.bartekk.bot.util.Labels;
+import pl.bartekk.bot.util.MotorIndicator;
 
 public class Controller {
 
-    // FIXME: 14.05.2018
-    private Link link;
-
-    private static String FEM_FILE_PATH = "n/a";
-
+    //menu
     public MenuItem aboutItem;
-    public Button button;
-    public ComboBox portID;
-    public Button chooseFileButton;
-    public Label motor1Label;
-    public Label motor2Label;
-    public TextField speed1TestField;
-    public TextField speed2TestField;
-    public Label manualLabel;
-    public Label automaticLabel;
-    public Label modeLabel;
-    public Label controlsLabel;
 
-    // slow start mode
+    //control pane
+    public Pane controlPane;
+    public Label controlsLabel;
+    public Label manualLabel;
+    public RadioButton separatelyRadioButton;
+    public RadioButton collectivelyRadioButton;
+    public Label automaticLabel;
+    public RadioButton femRadioButton;
     public CheckBox slowStartCheckBox;
     public TextField slowStartTextField;
     public Label slowStartModeLabel;
-
-    public Label statusLabel;
-
-    // motor speed
-    public Slider motor1SpeedSlider;
-    public Slider motor2SpeedSlider;
-
     public Button startButton;
-    public Button copyToMotor1Button;
+
+    //motor 1 pane
+    public Pane motorPane;
+    public Label motor1Label;
+    public ImageView motor1Image;
+    public Slider motor1SpeedSlider;
+    public TextField speed1TestField;
     public Button copyToMotor2Button;
 
-    // images
-    public ImageView motor1Image;
-    public ImageView motor2Image;
-
-    public RadioButton separatelyRadioButton;
-    public RadioButton collectivelyRadioButton;
-    public RadioButton femRadioButton;
-
+    //motor 2 pane
     public Pane motor2Pane;
-    public Label timeLabel;
-    public Label selectedFilePath;
+    public Label motor2Label;
+    public ImageView motor2Image;
+    public Slider motor2SpeedSlider;
+    public TextField speed2TestField;
+    public Button copyToMotor1Button;
 
-    // pane
-    public Pane controlPane;
-    public Pane motorPane;
+    //summary pane
     public Pane summaryPane;
-
-    private RotateTransition rotateTransition1;
-    private RotateTransition rotateTransition2;
-
+    public Label timeLabel;
     public ProgressIndicator connectionProgressIndicator;
 
-    private Runnable helloRunnable;
+    //connection pane
+    public Button connectButton;
+    public Label selectedFilePath;
+    public ComboBox portId;
+    public Button chooseFileButton;
+    public Label statusLabel;
+
+    // other
+    private Link link;
+    private static String FEM_FILE_PATH = "n/a";
+    private RotateTransition rotateTransition1;
+    private RotateTransition rotateTransition2;
     private ScheduledExecutorService executor;
     private File selectedFile;
     private String femFileContent;
 
     private void runFileChecker() {
-        this.helloRunnable = () -> {
-            System.out.println("SPRAWDZAM PLIK");
+        Runnable helloRunnable = () -> {
             String tempContent = getFemFileContent();
             if (!tempContent.equals(femFileContent)) {
                 femFileContent = tempContent;
                 try {
-                    if (startButton.getText().equals("Stop")) {
+                    if (startButton.getText().equals(Labels.STOP)) {
                         setSpeedValueToSliders(femFileContent);
                         link.sendCustomMessage(femFileContent);
-                        System.out.println("Wyslalem: " + femFileContent);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -163,13 +155,13 @@ public class Controller {
     }
 
     public void handleConnectButtonClick() {
-        if (statusLabel.getText().equals(ConnectionStatus.DISCONNECTED)) {
+        if (statusLabel.getText().equals(Labels.DISCONNECTED)) {
 
             connectionProgressIndicator.setVisible(true);
             connectionProgressIndicator.setProgress(-1);
 
             String URI = "ardulink://serial-jssc?baudrate=9600&pingprobe=false&port=";
-            String resultURI = URI.concat(portID.getValue().toString().replaceAll("\\s+", ""));
+            String resultURI = URI.concat(portId.getValue().toString().replaceAll("\\s+", ""));
             try {
                 link = Links.getLink(URIs.newURI(resultURI));
             } catch (RuntimeException e) {
@@ -177,21 +169,20 @@ public class Controller {
                 return;
             }
             connectionProgressIndicator.setProgress(1);
-            statusLabel.setText(ConnectionStatus.CONNECTED);
-            button.setText("Disconnect");
+            statusLabel.setText(Labels.CONNECTED);
+            connectButton.setText("Disconnect");
             statusLabel.setTextFill(Paint.valueOf("GREEN"));
-            portID.setDisable(true);
+            portId.setDisable(true);
             disableDashboard(false);
-        } else if (statusLabel.getText().equals(ConnectionStatus.CONNECTED)) {
+        } else if (statusLabel.getText().equals(Labels.CONNECTED)) {
             link = null;
             connectionProgressIndicator.setVisible(false);
-            statusLabel.setText(ConnectionStatus.DISCONNECTED);
-            button.setText("Connect");
+            statusLabel.setText(Labels.DISCONNECTED);
+            connectButton.setText("Connect");
             statusLabel.setTextFill(Paint.valueOf("RED"));
-            portID.setDisable(false);
+            portId.setDisable(false);
             disableDashboard(true);
         }
-        System.out.println(portID.getValue());
     }
 
     private void disableDashboard(boolean disable) {
@@ -210,7 +201,6 @@ public class Controller {
         controlsLabel.setOpacity(opacity);
         manualLabel.setOpacity(opacity);
         automaticLabel.setOpacity(opacity);
-        modeLabel.setOpacity(opacity);
     }
 
     public void selectFemFile() {
@@ -228,7 +218,6 @@ public class Controller {
                 selectedFilePath.setText(FEM_FILE_PATH);
                 content = new String(Files.readAllBytes(Paths.get(FEM_FILE_PATH)));
             } catch (IOException e) {
-                // FIXME: 15.05.2018
                 e.printStackTrace();
             }
         }
@@ -244,7 +233,7 @@ public class Controller {
         alert.show();
     }
 
-    public void showConnectionErrorMessageDialog() {
+    private void showConnectionErrorMessageDialog() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Connection error");
         alert.setHeaderText("StepperBot v1");
@@ -252,12 +241,12 @@ public class Controller {
         alert.show();
     }
 
-    public void rotateImage() {
-        rotateTransition1 = new RotateTransition(Duration.seconds(60), motor1Image);
-        rotateTransition2 = new RotateTransition(Duration.seconds(60), motor2Image);
-        rotateTransition1.setToAngle(3600);
+    private void rotateImage() {
+        rotateTransition1 = new RotateTransition(Duration.seconds(6000000), motor1Image);
+        rotateTransition2 = new RotateTransition(Duration.seconds(6000000), motor2Image);
+        rotateTransition1.setToAngle(360000000);
         rotateTransition1.setInterpolator(Interpolator.LINEAR);
-        rotateTransition2.setToAngle(3600);
+        rotateTransition2.setToAngle(360000000);
         rotateTransition2.setInterpolator(Interpolator.LINEAR);
         if (rotateTransition1.getStatus() == Animation.Status.RUNNING) {
             rotateTransition1.pause();
@@ -270,22 +259,19 @@ public class Controller {
             } else {
                 secondMotorSpeed = Double.valueOf(speed2TestField.getText()).intValue();
             }
-            if (firstMotorSpeed != 0) {
-                if (firstMotorSpeed < 0) {
-                    rotateTransition1.setToAngle(rotateTransition1.getToAngle() * -1);
-                } else {
-                    rotateTransition1.setToAngle(Math.abs(rotateTransition1.getToAngle()));
-                }
-                rotateTransition1.play();
+            rotate(firstMotorSpeed, rotateTransition1);
+            rotate(secondMotorSpeed, rotateTransition2);
+        }
+    }
+
+    private void rotate(int firstMotorSpeed, RotateTransition rotateTransition1) {
+        if (firstMotorSpeed != 0) {
+            if (firstMotorSpeed < 0) {
+                rotateTransition1.setToAngle(rotateTransition1.getToAngle() * -1);
+            } else {
+                rotateTransition1.setToAngle(Math.abs(rotateTransition1.getToAngle()));
             }
-            if (secondMotorSpeed != 0) {
-                if (secondMotorSpeed < 0) {
-                    rotateTransition2.setToAngle(rotateTransition2.getToAngle() * -1);
-                } else {
-                    rotateTransition2.setToAngle(Math.abs(rotateTransition2.getToAngle()));
-                }
-                rotateTransition2.play();
-            }
+            rotateTransition1.play();
         }
     }
 
@@ -334,7 +320,7 @@ public class Controller {
             System.out.println(stopMessage);
             link.sendCustomMessage(stopMessage.trim());
             startButton.setTextFill(Paint.valueOf("GREEN"));
-            startButton.setText("Start");
+            startButton.setText(Labels.START);
             motorPane.setDisable(false);
             disableControls(false);
             stopRotating(MotorIndicator.BOTH);
@@ -351,8 +337,6 @@ public class Controller {
         manualLabel.setOpacity(opacity);
         automaticLabel.setDisable(disabled);
         automaticLabel.setOpacity(opacity);
-        modeLabel.setDisable(disabled);
-        modeLabel.setOpacity(opacity);
         slowStartCheckBox.setDisable(disabled);
         slowStartCheckBox.setOpacity(opacity);
         separatelyRadioButton.setDisable(disabled);
@@ -373,8 +357,8 @@ public class Controller {
         stopFileChecker();
         motor2Pane.setDisable(false);
         motor2Image.setOpacity(1);
-        motor1Label.setText("Motor 1");
-        motor2Label.setText("Motor 2");
+        motor1Label.setText(Labels.MOTOR_1);
+        motor2Label.setText(Labels.MOTOR_2);
         copyToMotor1Button.setDisable(false);
         copyToMotor2Button.setDisable(false);
         slowStartCheckBox.setDisable(false);
@@ -394,7 +378,7 @@ public class Controller {
         selectedFilePath.setText(FEM_FILE_PATH);
         stopFileChecker();
         motor2Pane.setDisable(true);
-        motor1Label.setText("Motor 1 & 2");
+        motor1Label.setText(Labels.MOTOR_1_2);
         motor2Label.setText("n/a");
         copyToMotor2Button.setDisable(true);
         slowStartCheckBox.setDisable(false);
@@ -422,19 +406,13 @@ public class Controller {
         collectivelyRadioButton.setSelected(false);
         motor2Pane.setDisable(false);
         motor2Image.setOpacity(1);
-        motor1Label.setText("Motor 1");
-        motor2Label.setText("Motor 2");
+        motor1Label.setText(Labels.MOTOR_1);
+        motor2Label.setText(Labels.MOTOR_2);
         copyToMotor1Button.setDisable(true);
         copyToMotor2Button.setDisable(true);
         motor1SpeedSlider.setDisable(true);
         motor2SpeedSlider.setDisable(true);
         speed1TestField.setEditable(false);
         speed2TestField.setEditable(false);
-    }
-
-    // TODO: 23.05.2018 test method, should be deleted
-    public void testMethod() throws IOException {
-        System.out.println("TEST OK");
-        link.sendCustomMessage("500,500;0");
     }
 }

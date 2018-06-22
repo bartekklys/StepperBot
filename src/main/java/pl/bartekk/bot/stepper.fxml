@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" disable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="pl.bartekk.bot.Controller">
+<AnchorPane id="AnchorPane" disable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="pl.bartekk.bot.controller.Controller">
   <children>
     <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="true">
       <bottom>
@@ -19,7 +19,7 @@
                 <Font name="System Bold" size="16.0" fx:id="x1" />
               </font>
             </Label>
-            <ComboBox fx:id="portID" layoutX="201.0" layoutY="37.0" prefHeight="21.0" prefWidth="184.0" promptText="" value="COM 5">
+            <ComboBox fx:id="portId" layoutX="201.0" layoutY="37.0" prefHeight="21.0" prefWidth="184.0" promptText="" value="COM 5">
               <items>
                 <FXCollections fx:factory="observableArrayList">
                   <String fx:value="COM 3" />
@@ -28,11 +28,10 @@
                 </FXCollections>
               </items>
             </ComboBox>
-            <Button fx:id="button" layoutX="411.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleConnectButtonClick" prefWidth="155.0" text="Connect" />
+            <Button fx:id="connectButton" layoutX="411.0" layoutY="37.0" mnemonicParsing="false" onAction="#handleConnectButtonClick" prefWidth="155.0" text="Connect" />
             <Label fx:id="statusLabel" font="$x1" layoutX="641.0" layoutY="35.0" style="-fx-border-color:black;" text="Disconnected" textFill="RED" wrapText="false" />
             <Label layoutX="140.0" layoutY="9.0" text="File path:" />
             <Button fx:id="chooseFileButton" disable="true" layoutX="201.0" layoutY="10.0" mnemonicParsing="false" onAction="#selectFemFile" prefWidth="184.0" text="Choose file" />
-            <Button fx:id="testButton" layoutX="14.0" layoutY="36.0" mnemonicParsing="false" onAction="#testMethod" text="Test" />
             <Label layoutX="411.0" layoutY="9.0" prefWidth="72.0" text="Selected file:" />
             <Label fx:id="selectedFilePath" layoutX="491.0" layoutY="9.0" prefWidth="287.0" text="n/a" />
             <ProgressIndicator fx:id="connectionProgressIndicator" disable="false" focusTraversable="false" layoutX="579.0" layoutY="27.0" minWidth="19.0" prefHeight="30.999900000002526" prefWidth="46.999977929684974" progress="-1.0" visible="false" />
@@ -98,7 +97,6 @@
             <RadioButton id="collectivelyBox" fx:id="collectivelyRadioButton" disable="false" layoutX="18.0" layoutY="93.0" mnemonicParsing="false" onAction="#selectCollectively" selected="true" text="Collectively" />
             <Label fx:id="manualLabel" disable="false" focusTraversable="true" layoutX="18.0" layoutY="41.0" opacity="0.4" text="Manual" />
             <Label fx:id="automaticLabel" disable="false" focusTraversable="true" layoutX="18.0" layoutY="123.0" opacity="0.4" text="Automatic" />
-            <Label fx:id="modeLabel" disable="false" focusTraversable="true" layoutX="18.0" layoutY="179.0" opacity="0.4" text="Mode" />
             <RadioButton fx:id="femRadioButton" disable="false" layoutX="19.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleFemRadioButton" text="FEM file" />
             <Label layoutX="14.0" layoutY="266.0" text="Spool size (diameter)" />
             <TextField layoutX="17.0" layoutY="291.0" prefWidth="72.0" />
