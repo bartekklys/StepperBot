@@ -35,7 +35,6 @@
             <Button fx:id="testButton" layoutX="14.0" layoutY="36.0" mnemonicParsing="false" onAction="#testMethod" text="Test" />
             <Label layoutX="411.0" layoutY="9.0" prefWidth="72.0" text="Selected file:" />
             <Label fx:id="selectedFilePath" layoutX="491.0" layoutY="9.0" prefWidth="287.0" text="n/a" />
-            <CheckBox id="FemCheckbox" fx:id="femCheckbox" layoutX="61.0" layoutY="9.0" mnemonicParsing="false" onAction="#handleFemCheckbox" selected="false" text="FEM file" />
             <ProgressIndicator fx:id="connectionProgressIndicator" disable="false" focusTraversable="false" layoutX="579.0" layoutY="27.0" minWidth="19.0" prefHeight="30.999900000002526" prefWidth="46.999977929684974" progress="-1.0" visible="false" />
           </children>
           <BorderPane.margin>
@@ -57,8 +56,6 @@
                 <Label layoutX="43.0" layoutY="336.0" text="Speed:" />
                 <TextField fx:id="speed1TestField" layoutX="98.0" layoutY="333.0" prefWidth="95.0" text="${motor1SpeedSlider.value}" />
                 <Label fx:id="motor1Label" layoutX="14.0" layoutY="6.0" text="Motor 1 &amp; 2" />
-                <Label layoutX="43.0" layoutY="364.0" text="Spool:" />
-                <TextField layoutX="98.0" layoutY="361.0" prefWidth="95.0" />
                 <Button fx:id="copyToMotor2Button" disable="true" layoutX="81.0" layoutY="453.0" mnemonicParsing="false" onAction="#handleCopyToMotor2Button" prefWidth="140.0" text="Copy to Motor 2 &gt;&gt;" />
               </children>
               <padding>
@@ -76,8 +73,6 @@
                 <Label layoutX="43.0" layoutY="336.0" text="Speed:" />
                 <TextField id="speed1TestField" fx:id="speed2TestField" layoutX="98.0" layoutY="333.0" prefWidth="95.0" text="${motor2SpeedSlider.value}" />
                 <Label fx:id="motor2Label" layoutX="14.0" layoutY="6.0" text="n/a" />
-                <Label layoutX="43.0" layoutY="364.0" text="Spool:" />
-                <TextField layoutX="98.0" layoutY="361.0" prefWidth="95.0" />
                 <Button fx:id="copyToMotor1Button" layoutX="14.0" layoutY="454.0" mnemonicParsing="false" onAction="#handleCopyToMotor1Button" prefWidth="140.0" text="&lt; &lt; Copy to Motor 1" />
               </children>
               <padding>
@@ -90,18 +85,24 @@
       <left>
         <Pane fx:id="controlPane" disable="true" prefHeight="489.0" prefWidth="150.0" style="-fx-border-color:black;" BorderPane.margin="$x2">
           <children>
-            <Button fx:id="rotateButton" layoutX="33.0" layoutY="288.0" mnemonicParsing="false" onAction="#rotateImage" text="Rotate" />
-            <Label layoutX="19.0" layoutY="14.0" text="Controls" />
-            <Button fx:id="startButton" cancelButton="false" defaultButton="false" layoutX="18.0" layoutY="433.0" mnemonicParsing="false" onAction="#start" prefHeight="41.0" prefWidth="114.0" text="Start" textFill="#0c9900" wrapText="false">
+            <Label fx:id="controlsLabel" disable="false" focusTraversable="true" layoutX="13.0" layoutY="11.0" opacity="0.4" text="Controls" />
+            <Button fx:id="startButton" cancelButton="false" defaultButton="false" disable="false" layoutX="18.0" layoutY="433.0" mnemonicParsing="false" onAction="#start" prefHeight="41.0" prefWidth="114.0" text="Start" textFill="#0c9900" wrapText="false">
               <font>
                 <Font name="Arial" size="24.0" />
               </font>
             </Button>
-            <CheckBox fx:id="slowStartCheckBox" layoutX="14.0" layoutY="170.0" mnemonicParsing="false" onAction="#handleSlowStartModeButton" text="Slow start mode" />
-            <TextField fx:id="slowStartTextField" disable="true" layoutX="36.0" layoutY="198.0" prefWidth="45.0" text="0" visible="true" />
-            <Label fx:id="slowStartModeLabel" disable="true" layoutX="89.0" layoutY="201.0" text="sec" visible="true" />
-            <RadioButton id="separatelyBox" fx:id="separatelyRadioButton" layoutX="16.0" layoutY="114.0" mnemonicParsing="false" onAction="#selectSeparately" text="Separately" />
-            <RadioButton id="collectivelyBox" fx:id="collectivelyRadioButton" layoutX="16.0" layoutY="140.0" mnemonicParsing="false" onAction="#selectCollectively" selected="true" text="Collectively" />
+            <CheckBox fx:id="slowStartCheckBox" disable="false" layoutX="18.0" layoutY="203.0" mnemonicParsing="false" onAction="#handleSlowStartModeButton" text="Slow start mode" />
+            <TextField fx:id="slowStartTextField" disable="true" layoutX="18.0" layoutY="231.0" prefWidth="72.0" text="0" visible="true" />
+            <Label fx:id="slowStartModeLabel" disable="true" layoutX="97.0" layoutY="234.0" prefWidth="32.0" text="sec" visible="true" />
+            <RadioButton id="separatelyBox" fx:id="separatelyRadioButton" disable="false" layoutX="19.0" layoutY="68.0" mnemonicParsing="false" onAction="#selectSeparately" text="Separately" />
+            <RadioButton id="collectivelyBox" fx:id="collectivelyRadioButton" disable="false" layoutX="18.0" layoutY="93.0" mnemonicParsing="false" onAction="#selectCollectively" selected="true" text="Collectively" />
+            <Label fx:id="manualLabel" disable="false" focusTraversable="true" layoutX="18.0" layoutY="41.0" opacity="0.4" text="Manual" />
+            <Label fx:id="automaticLabel" disable="false" focusTraversable="true" layoutX="18.0" layoutY="123.0" opacity="0.4" text="Automatic" />
+            <Label fx:id="modeLabel" disable="false" focusTraversable="true" layoutX="18.0" layoutY="179.0" opacity="0.4" text="Mode" />
+            <RadioButton fx:id="femRadioButton" disable="false" layoutX="19.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleFemRadioButton" text="FEM file" />
+            <Label layoutX="14.0" layoutY="266.0" text="Spool size (diameter)" />
+            <TextField layoutX="17.0" layoutY="291.0" prefWidth="72.0" />
+            <Label disable="false" layoutX="94.0" layoutY="294.0" text="cm" />
           </children>
         </Pane>
       </left>

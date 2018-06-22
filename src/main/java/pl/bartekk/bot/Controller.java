@@ -41,12 +41,15 @@ public class Controller {
     public MenuItem aboutItem;
     public Button button;
     public ComboBox portID;
-    public CheckBox femCheckbox;
     public Button chooseFileButton;
     public Label motor1Label;
     public Label motor2Label;
     public TextField speed1TestField;
     public TextField speed2TestField;
+    public Label manualLabel;
+    public Label automaticLabel;
+    public Label modeLabel;
+    public Label controlsLabel;
 
     // slow start mode
     public CheckBox slowStartCheckBox;
@@ -54,13 +57,13 @@ public class Controller {
     public Label slowStartModeLabel;
 
     public Label statusLabel;
-    public Button rotateButton;
 
     // motor speed
     public Slider motor1SpeedSlider;
     public Slider motor2SpeedSlider;
 
     public Button startButton;
+    public Button copyToMotor1Button;
     public Button copyToMotor2Button;
 
     // images
@@ -69,6 +72,7 @@ public class Controller {
 
     public RadioButton separatelyRadioButton;
     public RadioButton collectivelyRadioButton;
+    public RadioButton femRadioButton;
 
     public Pane motor2Pane;
     public Label timeLabel;
@@ -91,12 +95,16 @@ public class Controller {
 
     private void runFileChecker() {
         this.helloRunnable = () -> {
+            System.out.println("SPRAWDZAM PLIK");
             String tempContent = getFemFileContent();
             if (!tempContent.equals(femFileContent)) {
                 femFileContent = tempContent;
                 try {
-                    link.sendCustomMessage(femFileContent);
-                    setSpeedValueToSliders(femFileContent);
+                    if (startButton.getText().equals("Stop")) {
+                        setSpeedValueToSliders(femFileContent);
+                        link.sendCustomMessage(femFileContent);
+                        System.out.println("Wyslalem: " + femFileContent);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -108,35 +116,38 @@ public class Controller {
 
     private void setSpeedValueToSliders(String femFileContent) {
         if (!femFileContent.isEmpty()) {
+            femFileContent = femFileContent.substring(0, femFileContent.indexOf(";"));
             String[] speedValues = femFileContent.split(",");
-            motor1SpeedSlider.setValue(Double.valueOf(speedValues[0]));
-            motor2SpeedSlider.setValue(Double.valueOf(speedValues[1]));
+            Double firstMotorSpeed = Double.valueOf(speedValues[0]);
+            motor1SpeedSlider.setValue(firstMotorSpeed);
+            Double secondMotorSpeed = Double.valueOf(speedValues[1]);
+            motor2SpeedSlider.setValue(secondMotorSpeed);
+            if (firstMotorSpeed.intValue() == 0) {
+                stopRotating(MotorIndicator.FIRST);
+            }
+            if (secondMotorSpeed.intValue() == 0) {
+                stopRotating(MotorIndicator.SECOND);
+            }
         }
     }
 
     private void stopFileChecker() {
-        this.executor.shutdown();
+        if (this.executor != null && !this.executor.isShutdown()) {
+            this.executor.shutdown();
+            this.executor = null;
+        }
     }
 
     public void handleSlowStartModeButton() {
         if (slowStartTextField.isDisabled()) {
             slowStartTextField.setDisable(false);
-            slowStartModeLabel.setDisable(false);
+            slowStartTextField.setOpacity(1);
+            slowStartModeLabel.setOpacity(1);
         } else {
+            slowStartTextField.setOpacity(0.25);
+            slowStartModeLabel.setOpacity(0.25);
             slowStartTextField.setDisable(true);
-            slowStartModeLabel.setDisable(true);
-        }
-    }
-
-    public void handleFemCheckbox() {
-        if (chooseFileButton.isDisabled()) {
-            chooseFileButton.setDisable(false);
-            runFileChecker();
-        } else {
-            chooseFileButton.setDisable(true);
-            FEM_FILE_PATH = "n/a";
-            selectedFilePath.setText(FEM_FILE_PATH);
-            stopFileChecker();
+            slowStartTextField.setText("0");
         }
     }
 
@@ -192,6 +203,14 @@ public class Controller {
         summaryPane.setDisable(disable);
         motor1Image.setOpacity(opacity);
         motor2Image.setOpacity(opacity);
+        separatelyRadioButton.setOpacity(opacity);
+        collectivelyRadioButton.setOpacity(opacity);
+        femRadioButton.setOpacity(opacity);
+        slowStartCheckBox.setOpacity(opacity);
+        controlsLabel.setOpacity(opacity);
+        manualLabel.setOpacity(opacity);
+        automaticLabel.setOpacity(opacity);
+        modeLabel.setOpacity(opacity);
     }
 
     public void selectFemFile() {
@@ -213,6 +232,7 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+        setSpeedValueToSliders(content);
         return content;
     }
 
@@ -244,7 +264,12 @@ public class Controller {
             rotateTransition2.pause();
         } else {
             int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
-            int secondMotorSpeed = Double.valueOf(speed2TestField.getText()).intValue();
+            int secondMotorSpeed;
+            if (collectivelyRadioButton.isSelected()) {
+                secondMotorSpeed = firstMotorSpeed;
+            } else {
+                secondMotorSpeed = Double.valueOf(speed2TestField.getText()).intValue();
+            }
             if (firstMotorSpeed != 0) {
                 if (firstMotorSpeed < 0) {
                     rotateTransition1.setToAngle(rotateTransition1.getToAngle() * -1);
@@ -264,59 +289,152 @@ public class Controller {
         }
     }
 
-    public void stopRotating() {
-        rotateTransition1.pause();
-        rotateTransition2.pause();
+    private void stopRotating(int motorIndicator) {
+        switch (motorIndicator) {
+            case 0:
+                rotateTransition1.pause();
+                break;
+            case 1:
+                rotateTransition2.pause();
+                break;
+            case 2:
+                rotateTransition1.pause();
+                rotateTransition2.pause();
+                break;
+        }
     }
 
     public void start() throws IOException {
-
         if (startButton.getText().equals("Start")) {
             if (collectivelyRadioButton.isSelected()) {
                 int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
-                System.out.println(firstMotorSpeed + "," + firstMotorSpeed);
+                String message = String.valueOf(firstMotorSpeed) + "," + firstMotorSpeed + ";" + Integer.valueOf(slowStartTextField.getText());
+                System.out.println(message);
+                link.sendCustomMessage(message.trim());
+                motor2SpeedSlider.setValue(motor1SpeedSlider.getValue());
                 rotateImage();
 
             } else if (separatelyRadioButton.isSelected()) {
                 int firstMotorSpeed = Double.valueOf(speed1TestField.getText()).intValue();
                 int secondMotorSpeed = Double.valueOf(speed2TestField.getText()).intValue();
-                System.out.println(firstMotorSpeed + "," + secondMotorSpeed);
+                String message = firstMotorSpeed + "," + secondMotorSpeed + ";" + Integer.valueOf(slowStartTextField.getText());
+                System.out.println(message);
+                link.sendCustomMessage(message.trim());
+                rotateImage();
+            } else if (femRadioButton.isSelected()) {
+                link.sendCustomMessage(getFemFileContent().trim());
                 rotateImage();
             }
             startButton.setTextFill(Paint.valueOf("RED"));
             startButton.setText("Stop");
             motorPane.setDisable(true);
+            disableControls(true);
         } else if (startButton.getText().equals("Stop")) {
-            System.out.println("0,0");
-            stopRotating();
+            String stopMessage = "0,0;0";
+            System.out.println(stopMessage);
+            link.sendCustomMessage(stopMessage.trim());
             startButton.setTextFill(Paint.valueOf("GREEN"));
             startButton.setText("Start");
             motorPane.setDisable(false);
+            disableControls(false);
+            stopRotating(MotorIndicator.BOTH);
         }
+    }
+
+    private void disableControls(boolean disabled) {
+
+        double opacity = disabled ? 0.25 : 1;
+
+        controlsLabel.setDisable(disabled);
+        controlsLabel.setOpacity(opacity);
+        manualLabel.setDisable(disabled);
+        manualLabel.setOpacity(opacity);
+        automaticLabel.setDisable(disabled);
+        automaticLabel.setOpacity(opacity);
+        modeLabel.setDisable(disabled);
+        modeLabel.setOpacity(opacity);
+        slowStartCheckBox.setDisable(disabled);
+        slowStartCheckBox.setOpacity(opacity);
+        separatelyRadioButton.setDisable(disabled);
+        separatelyRadioButton.setOpacity(opacity);
+        collectivelyRadioButton.setDisable(disabled);
+        collectivelyRadioButton.setOpacity(opacity);
+        femRadioButton.setDisable(disabled);
+        femRadioButton.setOpacity(opacity);
     }
 
     public void selectSeparately() {
         separatelyRadioButton.setSelected(true);
         collectivelyRadioButton.setSelected(false);
+        femRadioButton.setSelected(false);
+        chooseFileButton.setDisable(true);
+        FEM_FILE_PATH = "n/a";
+        selectedFilePath.setText(FEM_FILE_PATH);
+        stopFileChecker();
         motor2Pane.setDisable(false);
         motor2Image.setOpacity(1);
         motor1Label.setText("Motor 1");
         motor2Label.setText("Motor 2");
+        copyToMotor1Button.setDisable(false);
         copyToMotor2Button.setDisable(false);
+        slowStartCheckBox.setDisable(false);
+        slowStartCheckBox.setOpacity(1);
+        motor1SpeedSlider.setDisable(false);
+        motor2SpeedSlider.setDisable(false);
+        speed1TestField.setEditable(true);
+        speed2TestField.setEditable(true);
     }
 
     public void selectCollectively() {
         collectivelyRadioButton.setSelected(true);
         separatelyRadioButton.setSelected(false);
+        femRadioButton.setSelected(false);
+        chooseFileButton.setDisable(true);
+        FEM_FILE_PATH = "n/a";
+        selectedFilePath.setText(FEM_FILE_PATH);
+        stopFileChecker();
         motor2Pane.setDisable(true);
         motor1Label.setText("Motor 1 & 2");
         motor2Label.setText("n/a");
         copyToMotor2Button.setDisable(true);
+        slowStartCheckBox.setDisable(false);
+        slowStartCheckBox.setOpacity(1);
+        motor1SpeedSlider.setDisable(false);
+        motor2SpeedSlider.setDisable(false);
+        speed1TestField.setEditable(true);
+        speed2TestField.setEditable(true);
+    }
+
+    public void handleFemRadioButton() {
+        if (chooseFileButton.isDisabled()) {
+            chooseFileButton.setDisable(false);
+            runFileChecker();
+        }
+        slowStartCheckBox.setSelected(false);
+        slowStartCheckBox.setDisable(true);
+        slowStartCheckBox.setOpacity(0.25);
+        slowStartTextField.setOpacity(0.25);
+        slowStartModeLabel.setOpacity(0.25);
+        slowStartTextField.setDisable(true);
+        slowStartTextField.setText("0");
+        femRadioButton.setSelected(true);
+        separatelyRadioButton.setSelected(false);
+        collectivelyRadioButton.setSelected(false);
+        motor2Pane.setDisable(false);
+        motor2Image.setOpacity(1);
+        motor1Label.setText("Motor 1");
+        motor2Label.setText("Motor 2");
+        copyToMotor1Button.setDisable(true);
+        copyToMotor2Button.setDisable(true);
+        motor1SpeedSlider.setDisable(true);
+        motor2SpeedSlider.setDisable(true);
+        speed1TestField.setEditable(false);
+        speed2TestField.setEditable(false);
     }
 
     // TODO: 23.05.2018 test method, should be deleted
     public void testMethod() throws IOException {
         System.out.println("TEST OK");
-        link.sendCustomMessage("1");
+        link.sendCustomMessage("500,500;0");
     }
 }
